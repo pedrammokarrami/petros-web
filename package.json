@@ -1,0 +1,17 @@
+{
+  "name": "website-builder",
+  "version": "1.0.0",
+  "description": "Auto-translating website builder with IP-based language detection",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}

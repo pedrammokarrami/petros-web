@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>پنل انبار — Website Builder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #6366f1; --primary-dark: #4f46e5;
+      --bg: #f8fafc; --card: #fff; --border: #e2e8f0;
+      --text: #1e293b; --muted: #64748b;
+      --success: #22c55e; --warning: #f59e0b; --danger: #ef4444;
+      --radius: 12px; --shadow: 0 2px 16px rgba(0,0,0,0.07);
+    }
+    body { font-family: 'Vazirmatn', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    header {
+      background: #fff; border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem; display: flex; align-items: center;
+      justify-content: space-between; position: sticky; top: 0; z-index: 40;
+    }
+    .logo { font-size: 1.25rem; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: .5rem; }
+    .breadcrumb { font-size: .85rem; color: var(--muted); }
+    .breadcrumb a { color: var(--primary); text-decoration: none; }
+    .header-nav { display: flex; gap: .75rem; }
+    .nav-link { padding: .45rem 1rem; border-radius: 8px; text-decoration: none; font-size: .88rem; font-weight: 500; color: var(--muted); border: 1px solid var(--border); }
+    .nav-link:hover, .nav-link.active { color: var(--primary); border-color: var(--primary); background: #f0f0ff; }
+
+    .page { padding: 2rem; max-width: 1200px; margin: 0 auto; }
+
+    /* Summary cards */
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.25rem; margin-bottom: 2rem; }
+    .card {
+      background: var(--card); border-radius: var(--radius);
+      padding: 1.5rem; box-shadow: var(--shadow);
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .card-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; }
+    .icon-blue { background: #eff6ff; }
+    .icon-yellow { background: #fffbeb; }
+    .icon-green { background: #f0fdf4; }
+    .icon-red { background: #fef2f2; }
+    .card-body { flex: 1; }
+    .card-val { font-size: 1.75rem; font-weight: 700; line-height: 1.2; }
+    .card-label { font-size: .8rem; color: var(--muted); margin-top: .2rem; }
+
+    /* Section */
+    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+    .section-title { font-size: 1.1rem; font-weight: 700; }
+    .btn {
+      padding: .55rem 1.2rem; border: none; border-radius: 8px;
+      font-family: inherit; font-size: .88rem; font-weight: 600;
+      cursor: pointer; display: inline-flex; align-items: center; gap: .35rem;
+    }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-dark); }
+    .btn-outline { background: #fff; color: var(--text); border: 1.5px solid var(--border); }
+    .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+    .btn-danger { background: #fef2f2; color: var(--danger); border: 1px solid #fca5a5; }
+    .btn-sm { padding: .35rem .75rem; font-size: .8rem; }
+
+    /* Table */
+    .table-wrap { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; }
+    thead { background: #f8fafc; }
+    th { padding: .875rem 1rem; text-align: right; font-size: .82rem; font-weight: 600; color: var(--muted); border-bottom: 1px solid var(--border); }
+    td { padding: .875rem 1rem; font-size: .9rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #fafafa; }
+
+    .badge {
+      display: inline-flex; align-items: center; gap: .3rem;
+      padding: .25rem .7rem; border-radius: 999px;
+      font-size: .78rem; font-weight: 600;
+    }
+    .badge-ok { background: #f0fdf4; color: #16a34a; }
+    .badge-low { background: #fffbeb; color: #d97706; }
+    .badge-out { background: #fef2f2; color: #dc2626; }
+
+    /* Alert banner */
+    .alert-banner {
+      background: #fffbeb; border: 1px solid #fde68a;
+      border-radius: var(--radius); padding: 1rem 1.25rem;
+      margin-bottom: 1.5rem; display: none;
+      align-items: flex-start; gap: .75rem;
+    }
+    .alert-banner.visible { display: flex; }
+    .alert-icon { font-size: 1.25rem; flex-shrink: 0; }
+    .alert-content { font-size: .88rem; color: #92400e; }
+    .alert-content strong { display: block; margin-bottom: .25rem; }
+
+    /* Modal */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,.4); z-index: 100;
+      align-items: center; justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: #fff; border-radius: 16px;
+      padding: 2rem; width: 100%; max-width: 440px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.2);
+    }
+    .modal h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 1.5rem; }
+    .form-group { margin-bottom: 1rem; }
+    .form-group label { display: block; font-size: .82rem; font-weight: 600; margin-bottom: .3rem; }
+    .form-group input, .form-group select {
+      width: 100%; padding: .6rem .875rem; border: 1.5px solid var(--border);
+      border-radius: 8px; font-family: inherit; font-size: .9rem; outline: none;
+    }
+    .form-group input:focus, .form-group select:focus { border-color: var(--primary); }
+    .modal-footer { display: flex; gap: .75rem; margin-top: 1.5rem; justify-content: flex-end; }
+
+    .empty-state { padding: 3rem 1rem; text-align: center; color: var(--muted); }
+    .empty-state .empty-icon { font-size: 3rem; margin-bottom: 1rem; }
+
+    @media (max-width: 700px) {
+      .page { padding: 1rem; }
+      .cards { grid-template-columns: 1fr 1fr; }
+      th:nth-child(4), td:nth-child(4) { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="logo">📦 پنل انبار</div>
+    <span class="breadcrumb"><a href="/">Website Builder</a> ← انبار</span>
+  </div>
+  <nav class="header-nav">
+    <a href="/" class="nav-link">🏠 سازنده</a>
+    <a href="/inventory.html" class="nav-link active">📦 انبار</a>
+    <a href="/accounting.html" class="nav-link">💰 حسابداری</a>
+  </nav>
+</header>
+
+<div class="page">
+
+  <!-- Summary cards -->
+  <div class="cards" id="summary-cards">
+    <div class="card">
+      <div class="card-icon icon-blue">📦</div>
+      <div class="card-body">
+        <div class="card-val" id="stat-total">—</div>
+        <div class="card-label">کل محصولات</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon icon-yellow">⚠️</div>
+      <div class="card-body">
+        <div class="card-val" id="stat-low">—</div>
+        <div class="card-label">موجودی کم</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon icon-red">🚫</div>
+      <div class="card-body">
+        <div class="card-val" id="stat-out">—</div>
+        <div class="card-label">اتمام موجودی</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon icon-green">✅</div>
+      <div class="card-body">
+        <div class="card-val" id="stat-ok">—</div>
+        <div class="card-label">موجودی کافی</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Low stock alert -->
+  <div class="alert-banner" id="low-alert">
+    <div class="alert-icon">⚠️</div>
+    <div class="alert-content">
+      <strong>هشدار: موجودی کم!</strong>
+      <span id="low-alert-text"></span>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="section-header">
+    <h2 class="section-title">فهرست محصولات</h2>
+    <button class="btn btn-primary" onclick="openAddModal()">+ افزودن محصول</button>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>نام محصول</th>
+          <th>قیمت (تومان)</th>
+          <th>موجودی</th>
+          <th>حد هشدار</th>
+          <th>وضعیت</th>
+          <th>آخرین بروزرسانی</th>
+          <th>عملیات</th>
+        </tr>
+      </thead>
+      <tbody id="inventory-tbody">
+        <tr><td colspan="7" class="empty-state"><div class="empty-icon">📦</div>در حال بارگذاری...</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Add/Edit Modal -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <h3 id="modal-title">افزودن محصول</h3>
+    <input type="hidden" id="modal-id">
+    <div class="form-group">
+      <label>نام محصول</label>
+      <input type="text" id="modal-name" placeholder="مثال: کفش ورزشی">
+    </div>
+    <div class="form-group">
+      <label>قیمت (تومان)</label>
+      <input type="text" id="modal-price" placeholder="مثال: ۲۹۹,۰۰۰">
+    </div>
+    <div class="form-group">
+      <label>موجودی فعلی</label>
+      <input type="number" id="modal-stock" min="0" placeholder="0">
+    </div>
+    <div class="form-group">
+      <label>حد هشدار کمبود</label>
+      <input type="number" id="modal-threshold" min="0" placeholder="5" value="5">
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal()">انصراف</button>
+      <button class="btn btn-primary" onclick="saveItem()">ذخیره</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let inventory = [];
+
+  async function load() {
+    try {
+      const res = await fetch('/api/inventory');
+      inventory = await res.json();
+    } catch {
+      inventory = [];
+    }
+    render();
+  }
+
+  function render() {
+    const total = inventory.length;
+    const low   = inventory.filter(i => i.stock > 0 && i.stock <= i.lowStockThreshold).length;
+    const out   = inventory.filter(i => i.stock === 0).length;
+    const ok    = total - low - out;
+
+    document.getElementById('stat-total').textContent = total;
+    document.getElementById('stat-low').textContent   = low;
+    document.getElementById('stat-out').textContent   = out;
+    document.getElementById('stat-ok').textContent    = ok;
+
+    const lowItems = inventory.filter(i => i.stock <= i.lowStockThreshold);
+    const alertEl  = document.getElementById('low-alert');
+    if (lowItems.length > 0) {
+      alertEl.classList.add('visible');
+      document.getElementById('low-alert-text').textContent =
+        lowItems.map(i => `«${i.name}» (موجودی: ${i.stock})`).join('، ');
+    } else {
+      alertEl.classList.remove('visible');
+    }
+
+    const tbody = document.getElementById('inventory-tbody');
+    if (inventory.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">📦</div>هنوز محصولی ثبت نشده. از سازنده سایت محصول اضافه کنید یا دکمه «افزودن» را بزنید.</div></td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = inventory.map(item => {
+      let badge, badgeClass;
+      if (item.stock === 0) {
+        badge = '🚫 اتمام موجودی'; badgeClass = 'badge-out';
+      } else if (item.stock <= item.lowStockThreshold) {
+        badge = '⚠️ موجودی کم'; badgeClass = 'badge-low';
+      } else {
+        badge = '✅ موجودی کافی'; badgeClass = 'badge-ok';
+      }
+      const updated = item.updatedAt ? new Date(item.updatedAt).toLocaleDateString('fa-IR') : '—';
+      return `<tr>
+        <td><strong>${escHtml(item.name)}</strong></td>
+        <td>${escHtml(item.price)}</td>
+        <td><strong>${item.stock}</strong> عدد</td>
+        <td>${item.lowStockThreshold}</td>
+        <td><span class="badge ${badgeClass}">${badge}</span></td>
+        <td style="font-size:.8rem;color:var(--muted)">${updated}</td>
+        <td style="display:flex;gap:.4rem">
+          <button class="btn btn-outline btn-sm" onclick="openEditModal('${item.id}')">✏️</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteItem('${item.id}')">🗑️</button>
+        </td>
+      </tr>`;
+    }).join('');
+  }
+
+  function escHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function openAddModal() {
+    document.getElementById('modal-title').textContent = 'افزودن محصول';
+    document.getElementById('modal-id').value = '';
+    document.getElementById('modal-name').value = '';
+    document.getElementById('modal-price').value = '';
+    document.getElementById('modal-stock').value = '';
+    document.getElementById('modal-threshold').value = '5';
+    document.getElementById('modal').classList.add('open');
+  }
+
+  function openEditModal(id) {
+    const item = inventory.find(i => i.id === id);
+    if (!item) return;
+    document.getElementById('modal-title').textContent = 'ویرایش محصول';
+    document.getElementById('modal-id').value = item.id;
+    document.getElementById('modal-name').value = item.name;
+    document.getElementById('modal-price').value = item.price;
+    document.getElementById('modal-stock').value = item.stock;
+    document.getElementById('modal-threshold').value = item.lowStockThreshold || 5;
+    document.getElementById('modal').classList.add('open');
+  }
+
+  function closeModal() {
+    document.getElementById('modal').classList.remove('open');
+  }
+
+  async function saveItem() {
+    const id    = document.getElementById('modal-id').value;
+    const name  = document.getElementById('modal-name').value.trim();
+    const price = document.getElementById('modal-price').value.trim();
+    const stock = parseInt(document.getElementById('modal-stock').value) || 0;
+    const thr   = parseInt(document.getElementById('modal-threshold').value) || 5;
+
+    if (!name) return alert('نام محصول را وارد کنید');
+
+    const action = id ? 'update' : 'add';
+    const item   = id ? { id, name, price, stock, lowStockThreshold: thr }
+                      : { name, price, stock, lowStockThreshold: thr };
+
+    try {
+      const res = await fetch('/api/inventory', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action, item })
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error || 'خطا');
+      closeModal();
+      await load();
+    } catch (e) {
+      alert('خطا: ' + e.message);
+    }
+  }
+
+  async function deleteItem(id) {
+    const item = inventory.find(i => i.id === id);
+    if (!confirm(`آیا از حذف «${item?.name}» مطمئن هستید؟`)) return;
+    try {
+      await fetch('/api/inventory', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'delete', item: { id } })
+      });
+      await load();
+    } catch (e) {
+      alert('خطا: ' + e.message);
+    }
+  }
+
+  document.getElementById('modal').addEventListener('click', e => {
+    if (e.target === document.getElementById('modal')) closeModal();
+  });
+
+  load();
+</script>
+</body>
+</html>

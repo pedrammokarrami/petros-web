@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{BRAND_NAME}}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --p: {{PRIMARY_COLOR}}; --bg: #f0fdf4; --card: #fff; --border: #bbf7d0; --text: #14532d; --muted: #65a30d; --r: 12px; }
+    body { font-family: 'Vazirmatn', sans-serif; background: var(--bg); color: var(--text); }
+
+    #wb-loader { display:none; position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%); background:rgba(0,0,0,.85); color:#fff; padding:.6rem 1.4rem; border-radius:999px; font-size:.85rem; z-index:9999; gap:.5rem; align-items:center; }
+    .spin { width:14px; height:14px; border:2px solid rgba(255,255,255,.3); border-top-color:#fff; border-radius:50%; animation:spin .7s linear infinite; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+
+    nav { background:#fff; border-bottom:1px solid var(--border); padding:.875rem 2rem; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:40; }
+    .logo { font-size:1.35rem; font-weight:700; color:var(--p); display:flex; align-items:center; gap:.4rem; }
+    .nav-links { display:flex; gap:1.5rem; list-style:none; }
+    .nav-links a { color:var(--muted); text-decoration:none; font-size:.9rem; }
+    .nav-links a:hover { color:var(--p); }
+    .search-btn { background:var(--p); color:#fff; border:none; border-radius:8px; padding:.5rem 1.25rem; cursor:pointer; font-family:inherit; font-weight:600; font-size:.9rem; }
+
+    .hero { background:linear-gradient(135deg, #fff 50%, var(--bg) 100%); padding:5rem 2rem; }
+    .hero-inner { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:center; }
+    .hero-badge { display:inline-flex; gap:.4rem; align-items:center; background:#dcfce7; color:var(--p); border-radius:999px; padding:.35rem 1rem; font-size:.82rem; font-weight:600; margin-bottom:1.25rem; }
+    .hero h1 { font-size:2.75rem; font-weight:700; line-height:1.2; margin-bottom:.875rem; }
+    .hero p { color:var(--muted); margin-bottom:1.75rem; font-size:1rem; }
+    .hero-btns { display:flex; gap:1rem; flex-wrap:wrap; }
+    .btn-p { background:var(--p); color:#fff; border:none; border-radius:8px; padding:.8rem 2rem; font-weight:700; cursor:pointer; font-family:inherit; text-decoration:none; display:inline-block; }
+    .btn-o { background:#fff; color:var(--p); border:2px solid var(--p); border-radius:8px; padding:.8rem 2rem; font-weight:600; cursor:pointer; font-family:inherit; text-decoration:none; display:inline-block; }
+    .hero-search { background:#fff; border-radius:16px; padding:1.5rem; box-shadow:0 8px 32px rgba(22,163,74,.12); border:1px solid var(--border); }
+    .hero-search h3 { font-size:1.1rem; font-weight:700; margin-bottom:1rem; color:var(--p); }
+    .search-row { display:flex; gap:.75rem; margin-bottom:.75rem; }
+    .search-row input, .search-row select { flex:1; padding:.6rem .875rem; border:1.5px solid var(--border); border-radius:8px; font-family:inherit; font-size:.9rem; outline:none; }
+    .search-row input:focus, .search-row select:focus { border-color:var(--p); }
+    .search-submit { width:100%; background:var(--p); color:#fff; border:none; border-radius:8px; padding:.75rem; font-family:inherit; font-weight:700; font-size:.95rem; cursor:pointer; }
+
+    section { padding:4rem 2rem; }
+    .container { max-width:1100px; margin:0 auto; }
+    .sec-center { text-align:center; margin-bottom:2.5rem; }
+    .sec-center h2 { font-size:1.85rem; font-weight:700; margin-bottom:.5rem; }
+    .sec-center p { color:var(--muted); }
+
+    /* Properties */
+    .prop-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(300px,1fr)); gap:1.5rem; }
+    .prop-card { background:#fff; border-radius:var(--r); overflow:hidden; border:1px solid var(--border); transition:border-color .2s, transform .2s; }
+    .prop-card:hover { border-color:var(--p); transform:translateY(-3px); }
+    .prop-img { height:200px; background:linear-gradient(135deg, var(--p), #14532d); display:flex; align-items:center; justify-content:center; font-size:3.5rem; position:relative; }
+    .prop-tag { position:absolute; top:1rem; right:1rem; background:var(--p); color:#fff; border-radius:999px; padding:.25rem .75rem; font-size:.75rem; font-weight:600; }
+    .prop-body { padding:1.25rem; }
+    .prop-location { font-size:.82rem; color:var(--muted); margin-bottom:.4rem; display:flex; align-items:center; gap:.3rem; }
+    .prop-title { font-size:1.05rem; font-weight:700; margin-bottom:.5rem; }
+    .prop-price { font-size:1.25rem; font-weight:700; color:var(--p); margin-bottom:.75rem; }
+    .prop-features { display:flex; gap:1rem; font-size:.82rem; color:var(--muted); margin-bottom:1rem; padding-top:.75rem; border-top:1px solid var(--border); }
+    .prop-features span { display:flex; align-items:center; gap:.3rem; }
+    .prop-btn { width:100%; background:transparent; color:var(--p); border:1.5px solid var(--p); border-radius:8px; padding:.5rem; cursor:pointer; font-family:inherit; font-weight:600; font-size:.875rem; }
+
+    /* Services */
+    .srv-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:1.25rem; }
+    .srv-card { background:#fff; border-radius:var(--r); padding:1.5rem; border:1px solid var(--border); text-align:center; transition:border-color .2s; }
+    .srv-card:hover { border-color:var(--p); }
+    .srv-icon { font-size:2.25rem; margin-bottom:.75rem; }
+    .srv-title { font-size:1rem; font-weight:700; margin-bottom:.4rem; }
+    .srv-desc { color:var(--muted); font-size:.875rem; line-height:1.7; }
+
+    /* Agents */
+    .agent-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:1.5rem; }
+    .agent-card { background:#fff; border-radius:var(--r); overflow:hidden; border:1px solid var(--border); text-align:center; padding-bottom:1.5rem; }
+    .agent-img { height:180px; background:linear-gradient(135deg, var(--p), #14532d); display:flex; align-items:center; justify-content:center; font-size:4rem; }
+    .agent-body { padding:1.25rem 1.25rem 0; }
+    .agent-name { font-size:1.05rem; font-weight:700; margin-bottom:.25rem; }
+    .agent-role { font-size:.82rem; color:var(--p); font-weight:500; margin-bottom:.75rem; }
+    .agent-stats { display:flex; justify-content:center; gap:1.5rem; font-size:.8rem; color:var(--muted); margin-bottom:1rem; padding-top:.75rem; border-top:1px solid var(--border); }
+    .agent-btn { background:transparent; color:var(--p); border:1.5px solid var(--p); border-radius:8px; padding:.45rem 1.25rem; cursor:pointer; font-family:inherit; font-weight:600; font-size:.85rem; }
+
+    /* CTA */
+    .cta-section { background:linear-gradient(135deg, var(--p) 0%, #14532d 100%); color:#fff; border-radius:20px; margin:0 2rem; padding:4rem 2rem; text-align:center; }
+    .cta-section h2 { font-size:2rem; margin-bottom:.75rem; }
+    .cta-section p { opacity:.85; margin-bottom:2rem; }
+    .cta-form { display:grid; grid-template-columns:1fr 1fr auto; gap:1rem; max-width:700px; margin:0 auto; }
+    .cta-form input { padding:.75rem 1rem; border:none; border-radius:8px; font-family:inherit; outline:none; }
+    .cta-form button { background:rgba(0,0,0,.3); color:#fff; border:1px solid rgba(255,255,255,.3); border-radius:8px; padding:.75rem 1.5rem; cursor:pointer; font-family:inherit; font-weight:700; white-space:nowrap; }
+
+    /* Stats */
+    .stats-row { display:grid; grid-template-columns:repeat(auto-fit, minmax(180px,1fr)); gap:1.5rem; background:#fff; border-radius:20px; padding:2.5rem; border:1px solid var(--border); }
+    .stat-item { text-align:center; }
+    .stat-num { font-size:2.25rem; font-weight:700; color:var(--p); }
+    .stat-label { font-size:.875rem; color:var(--muted); margin-top:.25rem; }
+
+    footer { background:#14532d; color:#86efac; padding:2.5rem 2rem; }
+    .foot-inner { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fit, minmax(180px,1fr)); gap:2rem; margin-bottom:2rem; }
+    .foot-logo { font-size:1.3rem; font-weight:700; color:#fff; margin-bottom:.75rem; }
+    .foot-col h4 { color:#dcfce7; font-weight:600; margin-bottom:.875rem; }
+    .foot-col ul { list-style:none; }
+    .foot-col li { margin-bottom:.45rem; font-size:.875rem; }
+    .foot-col a { color:#86efac; text-decoration:none; }
+    .foot-col a:hover { color:#fff; }
+    .foot-bottom { max-width:1100px; margin:0 auto; border-top:1px solid #166534; padding-top:1.25rem; text-align:center; font-size:.82rem; }
+
+    @media(max-width:900px) { .hero-inner { grid-template-columns:1fr; } .hero-search { order:-1; } }
+    @media(max-width:600px) { .nav-links { display:none; } .cta-form { grid-template-columns:1fr; } }
+    /* Builder product grid */
+    .products { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px,1fr)); gap:1.5rem; }
+    .p-card { background:var(--card,#fff); border-radius:var(--r,12px); overflow:hidden; box-shadow:0 2px 16px rgba(0,0,0,.07); transition:transform .2s; border:1px solid var(--border,#e2e8f0); }
+    .p-card:hover { transform:translateY(-4px); }
+    .p-img { height:200px; background:linear-gradient(135deg,#f1f5f9,#e2e8f0); display:flex; align-items:center; justify-content:center; font-size:4rem; }
+    .p-body { padding:1.25rem; }
+    .p-name { font-size:1.05rem; font-weight:600; margin-bottom:.4rem; }
+    .p-desc { color:var(--muted,#64748b); font-size:.88rem; margin-bottom:1rem; opacity:.8; }
+    .p-foot { display:flex; align-items:center; justify-content:space-between; }
+    .p-price { font-size:1.15rem; font-weight:700; color:var(--p); }
+    .add-btn { background:var(--p); color:#fff; border:none; border-radius:8px; padding:.45rem 1rem; cursor:pointer; font-family:inherit; font-weight:600; font-size:.88rem; text-decoration:none; display:inline-block; }
+  </style>
+</head>
+<body>
+
+<div id="wb-loader"><span class="spin"></span><span data-i18n>در حال ترجمه...</span></div>
+
+<nav>
+  <div class="logo">🏠 {{LOGO}}</div>
+  <ul class="nav-links">
+    <li><a href="#" data-i18n>خانه</a></li>
+    <li><a href="#properties" data-i18n>ملک‌ها</a></li>
+    <li><a href="#agents" data-i18n>مشاوران</a></li>
+    <li><a href="#contact" data-i18n>تماس</a></li>
+  </ul>
+  <button class="search-btn" data-i18n>جستجوی پیشرفته</button>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge" data-i18n>🔑 مشاور املاک معتبر</div>
+      <h1>{{BRAND_NAME}}</h1>
+      <p data-i18n>{{TAGLINE}}<br>بهترین گزینه‌ها برای خرید، فروش و اجاره ملک در {{CITY}}</p>
+      <div class="hero-btns">
+        <a href="#properties" class="btn-p" data-i18n>مشاهه ملک‌ها</a>
+        <a href="{{PAYMENT_LINK}}" class="add-btn" style="padding:.75rem 2rem;font-size:.95rem;font-weight:700;border-radius:999px" target="_blank" rel="noopener" data-i18n>💳 پرداخت آنلاین</a>
+        <a href="#agents" class="btn-o" data-i18n>مشاوران ما</a>
+      </div>
+    </div>
+    <div class="hero-search">
+      <h3 data-i18n>یافتن ملک ایده‌آل</h3>
+      <div class="search-row">
+        <select>
+          <option data-i18n>نوع معامله</option>
+          <option data-i18n>خرید</option>
+          <option data-i18n>اجاره</option>
+        </select>
+        <select>
+          <option data-i18n>نوع ملک</option>
+          <option data-i18n>آپارتمان</option>
+          <option data-i18n>ویلا</option>
+          <option data-i18n>دفتر کار</option>
+          <option data-i18n>مغازه</option>
+        </select>
+      </div>
+      <div class="search-row">
+        <input type="text" data-i18n-placeholder placeholder="منطقه یا محله...">
+        <input type="text" data-i18n-placeholder placeholder="محدوده قیمت (تومان)">
+      </div>
+      <button class="search-submit" data-i18n>جستجو</button>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="stats-row">
+      <div class="stat-item"><div class="stat-num">+۵۰۰</div><div class="stat-label" data-i18n>ملک فعال</div></div>
+      <div class="stat-item"><div class="stat-num">+۵۰</div><div class="stat-label" data-i18n>مشاور متخصص</div></div>
+      <div class="stat-item"><div class="stat-num">+۱۰k</div><div class="stat-label" data-i18n>معامله موفق</div></div>
+      <div class="stat-item"><div class="stat-num">۹۹٪</div><div class="stat-label" data-i18n>رضایت مشتری</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="properties">
+  <div class="container">
+    <div class="sec-center">
+      <h2 data-i18n>ملک‌های پیشنهادی</h2>
+      <p data-i18n>انتخابی از بهترین آپارتمان‌ها، ویلاها و اداری‌ها</p>
+    </div>
+    <div class="products">{{PRODUCTS_GRID}}</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="sec-center">
+      <h2 data-i18n>خدمات ما</h2>
+      <p data-i18n>پشتیبانی کامل در تمام مراحل معامله ملکی</p>
+    </div>
+    <div class="srv-grid">
+      <div class="srv-card"><div class="srv-icon">🔍</div><div class="srv-title" data-i18n>مشاوره خرید</div><p class="srv-desc" data-i18n>راهنمایی در انتخاب بهترین ملک متناسب با بودجه و نیاز شما</p></div>
+      <div class="srv-card"><div class="srv-icon">📋</div><div class="srv-title" data-i18n>ارزیابی ملک</div><p class="srv-desc" data-i18n>بررسی دقیق قیمت واقعی و وضعیت حقوقی و فنی ملک</p></div>
+      <div class="srv-card"><div class="srv-icon">📝</div><div class="srv-title" data-i18n>تهیه قرارداد</div><p class="srv-desc" data-i18n>تهیه قراردادهای استاندارد و ثبت سند در دفتر اسناد</p></div>
+      <div class="srv-card"><div class="srv-icon">🏦</div><div class="srv-title" data-i18n>تسهیل وام</div><p class="srv-desc" data-i18n>همکاری با بانک‌ها برای دریافت وام مسکن با نرخ مناسب</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="agents">
+  <div class="container">
+    <div class="sec-center">
+      <h2 data-i18n>مشاوران املاک ما</h2>
+      <p data-i18n>تیم مجرب و آشنای با بازار ملکی {{CITY}}</p>
+    </div>
+    <div class="agent-grid">
+      <div class="agent-card"><div class="agent-img">👨‍💼</div><div class="agent-body"><div class="agent-name" data-i18n>رضا محمدی</div><div class="agent-role" data-i18n>مشاور ارشد فروش</div><div class="agent-stats"><span>🏆 ۱۵۰ معامله</span><span>⭐ ۴.۹/۵</span></div><button class="agent-btn" data-i18n>تماس با مشاور</button></div></div>
+      <div class="agent-card"><div class="agent-img">👩‍💼</div><div class="agent-body"><div class="agent-name" data-i18n>مریم احمدی</div><div class="agent-role" data-i18n>متخصص اجاره</div><div class="agent-stats"><span>🏆 ۲۰۰ معامله</span><span>⭐ ۴.۸/۵</span></div><button class="agent-btn" data-i18n>تماس با مشاور</button></div></div>
+      <div class="agent-card"><div class="agent-img">👨‍💼</div><div class="agent-body"><div class="agent-name" data-i18n>علی رضایی</div><div class="agent-role" data-i18n>مشاور ویلا و باغ</div><div class="agent-stats"><span>🏆 ۸۰ معامله</span><span>⭐ ۵.۰/۵</span></div><button class="agent-btn" data-i18n>تماس با مشاور</button></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="cta-section" id="contact">
+  <h2 data-i18n>ملک مورد نظرتان را پیدا نکردید؟</h2>
+  <p data-i18n>مشاوران ما بهترین گزینه‌ها را برای شما پیدا می‌کنند</p>
+  <div class="cta-form">
+    <input type="text" data-i18n-placeholder placeholder="نام شما">
+    <input type="tel" data-i18n-placeholder placeholder="شماره تماس">
+    <button data-i18n>تماس بگیرید</button>
+  </div>
+</div>
+
+<footer>
+  <div class="foot-inner">
+    <div><div class="foot-logo">🏠 {{BRAND_NAME}}</div><p style="font-size:.875rem" data-i18n>مشاور املاک معتبر با سال‌ها تجربه در بازار ملکی {{CITY}}. اعتماد، شفافیت، نتیجه.</p></div>
+    <div class="foot-col"><h4 data-i18n>ملک‌ها</h4><ul><li><a href="#" data-i18n>آپارتمان فروش</a></li><li><a href="#" data-i18n>آپارتمان اجاره</a></li><li><a href="#" data-i18n>ویلا و باغ</a></li><li><a href="#" data-i18n>اداری و تجاری</a></li></ul></div>
+    <div class="foot-col"><h4 data-i18n>خدمات</h4><ul><li><a href="#" data-i18n>مشاوره رایگان</a></li><li><a href="#" data-i18n>ارزیابی ملک</a></li><li><a href="#" data-i18n>تهیه قرارداد</a></li></ul></div>
+    <div class="foot-col"><h4 data-i18n>تماس</h4><ul><li>📞 {{PHONE}}</li><li>📧 {{EMAIL}}</li><li>📍 {{CITY}} — {{ADDRESS}}</li><li style="margin-top:.5rem;display:flex;gap:.75rem">{{SOCIAL_LINKS}}</li></ul></div>
+  </div>
+  <div class="foot-bottom"><span data-i18n>تمامی حقوق محفوظ است</span> &copy; 2024 {{BRAND_NAME}}</div>
+</footer>
+
+<script src="/translator.js"></script>
+</body>
+</html>

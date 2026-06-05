@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{BRAND_NAME}}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --p: {{PRIMARY_COLOR}}; --bg: #f0f9ff; --card: #fff; --border: #bae6fd; --text: #0c1a2e; --muted: #475569; --r: 14px; }
+    body { font-family: 'Vazirmatn', sans-serif; background: var(--bg); color: var(--text); }
+
+    #wb-loader { display:none; position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%); background:rgba(0,0,0,.85); color:#fff; padding:.6rem 1.4rem; border-radius:999px; font-size:.85rem; z-index:9999; gap:.5rem; align-items:center; }
+    .spin { width:14px; height:14px; border:2px solid rgba(255,255,255,.3); border-top-color:#fff; border-radius:50%; animation:spin .7s linear infinite; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+
+    nav { background:#fff; border-bottom:1px solid var(--border); padding:.875rem 2rem; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:40; }
+    .logo { font-size:1.35rem; font-weight:700; color:var(--p); }
+    .nav-links { display:flex; gap:1.5rem; list-style:none; }
+    .nav-links a { color:var(--muted); text-decoration:none; font-size:.9rem; }
+    .nav-links a:hover { color:var(--text); }
+    .cta-nav { background:var(--p); color:#fff; border:none; border-radius:8px; padding:.5rem 1.25rem; cursor:pointer; font-family:inherit; font-weight:600; font-size:.9rem; }
+
+    .hero { padding:6rem 2rem; text-align:center; background:linear-gradient(180deg, #fff 0%, var(--bg) 100%); position:relative; overflow:hidden; }
+    .hero::before { content:''; position:absolute; top:-200px; right:-200px; width:600px; height:600px; background:radial-gradient(circle, rgba(8,145,178,.12) 0%, transparent 70%); }
+    .hero-eyebrow { display:inline-flex; align-items:center; gap:.4rem; background:#e0f2fe; color:var(--p); border-radius:999px; padding:.35rem 1rem; font-size:.82rem; font-weight:600; margin-bottom:1.5rem; }
+    .hero h1 { font-size:3.25rem; font-weight:700; line-height:1.15; margin-bottom:.875rem; max-width:750px; margin-left:auto; margin-right:auto; }
+    .hero-accent { color:var(--p); }
+    .hero-sub { font-size:1.15rem; color:var(--muted); max-width:580px; margin:0 auto 2rem; }
+    .hero-btns { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; margin-bottom:2.5rem; }
+    .btn-p { background:var(--p); color:#fff; border:none; border-radius:8px; padding:.875rem 2rem; font-size:1rem; font-weight:700; cursor:pointer; font-family:inherit; text-decoration:none; display:inline-block; }
+    .btn-ghost { background:#fff; color:var(--text); border:1.5px solid var(--border); border-radius:8px; padding:.875rem 2rem; font-size:1rem; font-weight:600; cursor:pointer; font-family:inherit; text-decoration:none; display:inline-block; }
+    .social-proof { display:flex; align-items:center; justify-content:center; gap:.75rem; color:var(--muted); font-size:.875rem; }
+    .avatars { display:flex; }
+    .avatar { width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg,var(--p),#0f172a); border:2px solid #fff; margin-right:-8px; display:flex; align-items:center; justify-content:center; font-size:.75rem; color:#fff; }
+    .stars { color:#f59e0b; }
+
+    section { padding:4rem 2rem; }
+    .container { max-width:1100px; margin:0 auto; }
+    .sec-center { text-align:center; margin-bottom:2.5rem; }
+    .sec-center h2 { font-size:1.85rem; font-weight:700; margin-bottom:.5rem; }
+    .sec-center p { color:var(--muted); }
+
+    /* Features */
+    .features-bg { background:#fff; }
+    .feat-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(240px,1fr)); gap:1.5rem; }
+    .feat-card { background:var(--bg); border-radius:var(--r); padding:1.75rem; border:1px solid var(--border); transition:border-color .2s, transform .2s; }
+    .feat-card:hover { border-color:var(--p); transform:translateY(-3px); }
+    .feat-icon { font-size:2rem; margin-bottom:.875rem; }
+    .feat-title { font-size:1.05rem; font-weight:600; margin-bottom:.4rem; }
+    .feat-desc { color:var(--muted); font-size:.875rem; line-height:1.7; }
+
+    /* Pricing */
+    .pricing-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(260px,1fr)); gap:1.5rem; max-width:900px; margin:0 auto; }
+    .price-card { background:#fff; border:2px solid var(--border); border-radius:var(--r); padding:2rem; text-align:center; transition:border-color .2s; }
+    .price-card.popular { border-color:var(--p); position:relative; }
+    .pop-badge { position:absolute; top:-14px; left:50%; transform:translateX(-50%); background:var(--p); color:#fff; border-radius:999px; padding:.3rem .875rem; font-size:.78rem; font-weight:700; white-space:nowrap; }
+    .price-name { font-size:1rem; font-weight:600; margin-bottom:.5rem; color:var(--muted); }
+    .price-amount { font-size:2.5rem; font-weight:700; color:var(--text); margin-bottom:.25rem; }
+    .price-period { font-size:.85rem; color:var(--muted); margin-bottom:1.25rem; }
+    .price-features { list-style:none; margin-bottom:1.5rem; text-align:right; }
+    .price-features li { padding:.4rem 0; font-size:.875rem; color:var(--muted); border-bottom:1px solid var(--border); display:flex; gap:.5rem; align-items:center; }
+    .price-features li::before { content:'✓'; color:var(--p); font-weight:700; }
+    .price-btn { width:100%; padding:.75rem; border-radius:8px; font-family:inherit; font-weight:700; cursor:pointer; font-size:.95rem; }
+    .price-btn-p { background:var(--p); color:#fff; border:none; }
+    .price-btn-o { background:#fff; color:var(--text); border:1.5px solid var(--border); }
+
+    /* Testimonials */
+    .test-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr)); gap:1.5rem; }
+    .test-card { background:#fff; border-radius:var(--r); padding:1.75rem; border:1px solid var(--border); }
+    .test-stars { color:#f59e0b; margin-bottom:.875rem; }
+    .test-text { color:var(--muted); font-size:.9rem; line-height:1.75; margin-bottom:1.25rem; }
+    .test-author { font-weight:600; font-size:.875rem; }
+    .test-role { font-size:.8rem; color:var(--muted); }
+
+    /* CTA */
+    .cta-section { background:linear-gradient(135deg, var(--p) 0%, #0f172a 100%); color:#fff; text-align:center; border-radius:20px; margin:0 2rem; padding:4rem 2rem; }
+    .cta-section h2 { font-size:2rem; margin-bottom:.75rem; }
+    .cta-section p { opacity:.85; margin-bottom:2rem; }
+    .cta-form { display:flex; max-width:420px; margin:0 auto; gap:0; }
+    .cta-form input { flex:1; padding:.8rem 1.25rem; border:none; border-radius:8px 0 0 8px; font-family:inherit; outline:none; }
+    .cta-form button { background:rgba(0,0,0,.3); color:#fff; border:none; border-radius:0 8px 8px 0; padding:.8rem 1.5rem; cursor:pointer; font-family:inherit; font-weight:700; white-space:nowrap; border:1px solid rgba(255,255,255,.3); }
+
+    footer { background:#0c1a2e; color:#64748b; padding:3rem 2rem 1.5rem; margin-top:4rem; }
+    .foot-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(180px,1fr)); gap:2rem; margin-bottom:2rem; }
+    .foot-logo { font-size:1.3rem; font-weight:700; color:#fff; margin-bottom:.75rem; }
+    .foot-col h4 { color:#cbd5e1; font-weight:600; margin-bottom:.875rem; font-size:.9rem; }
+    .foot-col ul { list-style:none; }
+    .foot-col li { margin-bottom:.45rem; }
+    .foot-col a { color:#64748b; text-decoration:none; font-size:.875rem; }
+    .foot-col a:hover { color:#fff; }
+    .foot-bottom { border-top:1px solid #1e293b; padding-top:1.25rem; text-align:center; font-size:.82rem; }
+
+    @media(max-width:768px) { .nav-links { display:none; } .hero h1 { font-size:2.1rem; } .cta-form { flex-direction:column; } .cta-form input, .cta-form button { border-radius:8px; width:100%; } }
+    /* Builder product grid */
+    .products { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px,1fr)); gap:1.5rem; }
+    .p-card { background:var(--card,#fff); border-radius:var(--r,12px); overflow:hidden; box-shadow:0 2px 16px rgba(0,0,0,.07); transition:transform .2s; border:1px solid var(--border,#e2e8f0); }
+    .p-card:hover { transform:translateY(-4px); }
+    .p-img { height:200px; background:linear-gradient(135deg,#f1f5f9,#e2e8f0); display:flex; align-items:center; justify-content:center; font-size:4rem; }
+    .p-body { padding:1.25rem; }
+    .p-name { font-size:1.05rem; font-weight:600; margin-bottom:.4rem; }
+    .p-desc { color:var(--muted,#64748b); font-size:.88rem; margin-bottom:1rem; opacity:.8; }
+    .p-foot { display:flex; align-items:center; justify-content:space-between; }
+    .p-price { font-size:1.15rem; font-weight:700; color:var(--p); }
+    .add-btn { background:var(--p); color:#fff; border:none; border-radius:8px; padding:.45rem 1rem; cursor:pointer; font-family:inherit; font-weight:600; font-size:.88rem; text-decoration:none; display:inline-block; }
+  </style>
+</head>
+<body>
+
+<div id="wb-loader"><span class="spin"></span><span data-i18n>در حال ترجمه...</span></div>
+
+<nav>
+  <div class="logo">{{LOGO}}</div>
+  <ul class="nav-links">
+    <li><a href="#features" data-i18n>ویژگی‌ها</a></li>
+    <li><a href="#pricing" data-i18n>قیمت‌گذاری</a></li>
+    <li><a href="#testimonials" data-i18n>نظرات</a></li>
+  </ul>
+  <button class="cta-nav" data-i18n>شروع رایگان</button>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow" data-i18n>🚀 جدیدترین نسخه منتشر شد</div>
+  <h1>{{BRAND_NAME}}<br><span class="hero-accent">{{TAGLINE}}</span></h1>
+  <p class="hero-sub" data-i18n>راه‌حل هوشمند برای کسب‌وکارهای امروزی. سریع راه‌اندازی کنید، سریع رشد کنید.</p>
+  <div class="hero-btns">
+    <a href="#pricing" class="btn-p" data-i18n>شروع رایگان — ۱۴ روزه</a>
+    <a href="{{PAYMENT_LINK}}" class="add-btn" style="padding:.75rem 2rem;font-size:.95rem;font-weight:700;border-radius:999px" target="_blank" rel="noopener" data-i18n>💳 پرداخت آنلاین</a>
+    <a href="#features" class="btn-ghost" data-i18n>بیشتر بدانید</a>
+  </div>
+  <div class="social-proof">
+    <div class="avatars">
+      <div class="avatar">A</div><div class="avatar">B</div><div class="avatar">C</div><div class="avatar">D</div>
+    </div>
+    <span class="stars">★★★★★</span>
+    <span data-i18n>از +۱۰,۰۰۰ کاربر فعال</span>
+  </div>
+</section>
+
+<section class="features-bg" id="features">
+  <div class="container">
+    <div class="sec-center">
+      <h2 data-i18n>همه چیزی که نیاز دارید</h2>
+      <p data-i18n>ابزارهای قدرتمند برای رشد سریع‌تر کسب‌وکار شما</p>
+    </div>
+    <div class="feat-grid">
+      <div class="feat-card"><div class="feat-icon">⚡</div><div class="feat-title" data-i18n>سرعت بی‌نظیر</div><p class="feat-desc" data-i18n>زیرساخت ابری با ۹۹.۹٪ آپتایم و بارگذاری زیر ۱ ثانیه</p></div>
+      <div class="feat-card"><div class="feat-icon">🔒</div><div class="feat-title" data-i18n>امنیت پیشرفته</div><p class="feat-desc" data-i18n>رمزنگاری end-to-end و پشتیبان‌گیری خودکار روزانه</p></div>
+      <div class="feat-card"><div class="feat-icon">📊</div><div class="feat-title" data-i18n>تحلیل داده</div><p class="feat-desc" data-i18n>داشبورد آنالیتیکس کامل با گزارش‌های تفصیلی</p></div>
+      <div class="feat-card"><div class="feat-icon">🤝</div><div class="feat-title" data-i18n>یکپارچه‌سازی آسان</div><p class="feat-desc" data-i18n>اتصال به بیش از ۱۰۰ سرویس و API محبوب</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="container">
+    <div class="sec-center">
+      <h2 data-i18n>قیمت‌گذاری ساده و شفاف</h2>
+      <p data-i18n>بدون کارمزد پنهان، بدون قرارداد اجباری</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-name" data-i18n>پایه</div>
+        <div class="price-amount">{{PRICE1}}</div>
+        <div class="price-period" data-i18n>تومان / ماه</div>
+        <ul class="price-features">
+          <li data-i18n>۱ پروژه فعال</li>
+          <li data-i18n>۵ گیگابایت فضا</li>
+          <li data-i18n>پشتیبانی ایمیل</li>
+        </ul>
+        <button class="price-btn price-btn-o" data-i18n>شروع کنید</button>
+      </div>
+      <div class="price-card popular">
+        <span class="pop-badge" data-i18n>پرطرفدار</span>
+        <div class="price-name" data-i18n>حرفه‌ای</div>
+        <div class="price-amount">{{PRICE2}}</div>
+        <div class="price-period" data-i18n>تومان / ماه</div>
+        <ul class="price-features">
+          <li data-i18n>۱۰ پروژه فعال</li>
+          <li data-i18n>۵۰ گیگابایت فضا</li>
+          <li data-i18n>پشتیبانی ۲۴/۷</li>
+          <li data-i18n>آنالیتیکس پیشرفته</li>
+        </ul>
+        <button class="price-btn price-btn-p" data-i18n>انتخاب کنید</button>
+      </div>
+      <div class="price-card">
+        <div class="price-name" data-i18n>سازمانی</div>
+        <div class="price-amount">{{PRICE3}}</div>
+        <div class="price-period" data-i18n>تومان / ماه</div>
+        <ul class="price-features">
+          <li data-i18n>نامحدود پروژه</li>
+          <li data-i18n>فضای نامحدود</li>
+          <li data-i18n>مدیر اختصاصی</li>
+          <li data-i18n>SLA سفارشی</li>
+        </ul>
+        <button class="price-btn price-btn-o" data-i18n>تماس بگیرید</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="products">
+  <div class="container">
+    <div class="sec-center">
+      <h2 data-i18n>محصولات و خدمات</h2>
+      <p data-i18n>بهترین گزینه‌ها برای شما</p>
+    </div>
+    <div class="products">{{PRODUCTS_GRID}}</div>
+    <div style="text-align:center;margin-top:1.5rem"><a href="{{PAYMENT_LINK}}" class="add-btn" style="padding:.75rem 2rem;font-size:.95rem;font-weight:700;border-radius:999px" target="_blank" rel="noopener" data-i18n>💳 پرداخت آنلاین</a></div>
+  </div>
+</section>
+
+<section id="testimonials">
+  <div class="container">
+    <div class="sec-center"><h2 data-i18n>مشتریان ما چه می‌گویند</h2></div>
+    <div class="test-grid">
+      <div class="test-card"><div class="test-stars">★★★★★</div><p class="test-text" data-i18n>بعد از استفاده از این سرویس فروش ما ۳۰٪ رشد کرد. واقعاً تحول‌ساز بود.</p><div class="test-author" data-i18n>علی رضایی</div><div class="test-role" data-i18n>مدیرعامل استارتاپ</div></div>
+      <div class="test-card"><div class="test-stars">★★★★★</div><p class="test-text" data-i18n>ساده، سریع، و قدرتمند. بهترین ابزاری که تا به حال استفاده کرده‌ام.</p><div class="test-author" data-i18n>مریم احمدی</div><div class="test-role" data-i18n>توسعه‌دهنده مستقل</div></div>
+      <div class="test-card"><div class="test-stars">★★★★★</div><p class="test-text" data-i18n>پشتیبانی عالی و محصول بدون نقص. ارزش واقعی برای پولی که می‌دهید.</p><div class="test-author" data-i18n>کیوان موسوی</div><div class="test-role" data-i18n>مدیر محصول</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="cta-section">
+  <h2 data-i18n>آماده شروع هستید؟</h2>
+  <p data-i18n>۱۴ روز رایگان، بدون نیاز به کارت اعتباری</p>
+  <div class="cta-form">
+    <input type="email" data-i18n-placeholder placeholder="ایمیل کاری شما...">
+    <button data-i18n>شروع رایگان</button>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div><div class="foot-logo">{{BRAND_NAME}}</div><p style="font-size:.875rem" data-i18n>راه‌حل هوشمند برای کسب‌وکارهای در حال رشد</p></div>
+      <div class="foot-col"><h4 data-i18n>محصول</h4><ul><li><a href="#" data-i18n>ویژگی‌ها</a></li><li><a href="#" data-i18n>قیمت‌گذاری</a></li><li><a href="#" data-i18n>به‌روزرسانی‌ها</a></li></ul></div>
+      <div class="foot-col"><h4 data-i18n>شرکت</h4><ul><li><a href="#" data-i18n>درباره ما</a></li><li><a href="#" data-i18n>وبلاگ</a></li><li><a href="#" data-i18n>تماس</a></li></ul></div>
+      <div class="foot-col"><h4 data-i18n>تماس</h4><ul><li>{{EMAIL}}</li><li>{{PHONE}}</li><li style="margin-top:.5rem;display:flex;gap:.75rem">{{SOCIAL_LINKS}}</li></ul></div>
+    </div>
+    <div class="foot-bottom"><span data-i18n>تمامی حقوق محفوظ است</span> &copy; 2024 {{BRAND_NAME}}</div>
+  </div>
+</footer>
+
+<script src="/translator.js"></script>
+</body>
+</html>

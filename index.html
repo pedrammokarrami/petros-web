@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Website Builder — ساخت وبسایت با ترجمه خودکار</title>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --border: #e2e8f0;
+      --text: #1e293b;
+      --muted: #64748b;
+      --radius: 14px;
+      --shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+
+    body {
+      font-family: 'Vazirmatn', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ── Header ── */
+    header {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .logo { font-size: 1.4rem; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; }
+    .header-badge {
+      font-size: 0.75rem;
+      background: #f0f0ff;
+      color: var(--primary);
+      border: 1px solid #c7d2fe;
+      border-radius: 999px;
+      padding: 0.2rem 0.75rem;
+      font-weight: 600;
+    }
+
+    /* ── Hero banner ── */
+    .hero-banner {
+      background: linear-gradient(135deg, var(--primary) 0%, #0f172a 100%);
+      color: white;
+      text-align: center;
+      padding: 3.5rem 2rem;
+    }
+    .hero-banner h1 { font-size: 2.25rem; font-weight: 700; margin-bottom: 0.75rem; }
+    .hero-banner p  { font-size: 1.1rem; opacity: 0.85; max-width: 600px; margin: 0 auto 1.5rem; }
+    .badges { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+    .badge {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 999px;
+      padding: 0.35rem 1rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    /* ── Section wrapper ── */
+    .section { padding: 3rem 2rem; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .section-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; }
+    .step-badge {
+      background: var(--primary);
+      color: white;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* ── Template gallery ── */
+    #template-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.25rem;
+    }
+    .tpl-card {
+      background: var(--card);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    }
+    .tpl-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: #c7d2fe; }
+    .tpl-card.selected { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99,102,241,0.2); }
+    .tpl-thumb {
+      height: 120px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .tpl-icon { font-size: 3rem; }
+    .tpl-meta { padding: 1rem; }
+    .tpl-meta strong { display: block; font-size: 1rem; margin-bottom: 0.15rem; }
+    .tpl-meta small { color: var(--primary); font-weight: 600; font-size: 0.8rem; display: block; margin-bottom: 0.4rem; }
+    .tpl-meta p { font-size: 0.82rem; color: var(--muted); }
+
+    /* ── Config panel ── */
+    #config-panel { background: white; border-top: 1px solid var(--border); }
+    .config-header {
+      background: #f0f0ff;
+      border-bottom: 1px solid #c7d2fe;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .config-header h3 { font-size: 1.1rem; font-weight: 700; color: var(--primary); }
+
+    .config-grid {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 2rem;
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    @media (max-width: 900px) { .config-grid { grid-template-columns: 1fr; } }
+
+    .form-group { margin-bottom: 1.1rem; }
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+      color: var(--text);
+    }
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group input[type="tel"] {
+      width: 100%;
+      padding: 0.6rem 0.9rem;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-group input:focus { border-color: var(--primary); }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .form-inline {
+      width: 100%; padding: 0.5rem 0.7rem;
+      border: 1.5px solid var(--border); border-radius: 8px;
+      font-family: inherit; font-size: 0.85rem; outline: none;
+    }
+    .form-inline:focus { border-color: var(--primary); }
+
+    .color-row { display: flex; align-items: center; gap: 0.75rem; }
+    input[type="color"] {
+      width: 44px; height: 36px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      padding: 2px;
+      background: white;
+    }
+
+    .divider { border: none; border-top: 1px solid var(--border); margin: 1.25rem 0; }
+
+    .action-btns { display: flex; gap: 0.75rem; margin-top: 1.5rem; flex-wrap: wrap; }
+    .btn {
+      padding: 0.7rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: opacity 0.2s;
+    }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { background: var(--primary-dark); }
+    .btn-outline { background: white; color: var(--text); border: 1.5px solid var(--border); }
+    .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+
+    #builder-spinner {
+      display: none;
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Preview section ── */
+    #preview-section { padding: 0; }
+    .preview-header {
+      background: #1e293b;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.9rem;
+    }
+    .preview-dots { display: flex; gap: 6px; }
+    .dot { width: 12px; height: 12px; border-radius: 50%; }
+    .dot-r { background: #ef4444; }
+    .dot-y { background: #f59e0b; }
+    .dot-g { background: #22c55e; }
+
+    #preview-frame {
+      width: 100%;
+      height: 700px;
+      border: none;
+      display: block;
+    }
+
+    /* ── Info strip ── */
+    .info-strip {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      font-size: 0.88rem;
+      color: #92400e;
+      margin-bottom: 1.25rem;
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    @media (max-width: 600px) {
+      .hero-banner h1 { font-size: 1.6rem; }
+      #template-gallery { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="logo">🌐 Website Builder</div>
+    <div style="display:flex;align-items:center;gap:.75rem">
+      <span class="header-badge">ترجمه خودکار</span>
+      <a href="/inventory.html" style="font-size:.82rem;color:var(--primary);text-decoration:none;font-weight:600;border:1px solid #c7d2fe;border-radius:999px;padding:.2rem .75rem">📦 انبار</a>
+      <a href="/accounting.html" style="font-size:.82rem;color:var(--primary);text-decoration:none;font-weight:600;border:1px solid #c7d2fe;border-radius:999px;padding:.2rem .75rem">💰 حسابداری</a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <div class="hero-banner">
+    <h1>وبسایت حرفه‌ای بساز — در هر زبانی</h1>
+    <p>قالب انتخاب کن، اطلاعات کسب‌وکارت را وارد کن. وبسایت به‌طور خودکار بر اساس موقعیت جغرافیایی بازدیدکننده ترجمه می‌شود.</p>
+    <div class="badges">
+      <span class="badge">🌍 ۸۰+ زبان</span>
+      <span class="badge">⚡ ترجمه با Claude Haiku</span>
+      <span class="badge">💾 کش LocalStorage</span>
+      <span class="badge">🔄 تشخیص IP خودکار</span>
+    </div>
+  </div>
+
+  <!-- Step 1: Templates -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">
+        <span class="step-badge">۱</span>
+        قالب مورد نظر را انتخاب کنید
+      </h2>
+      <div id="template-gallery"></div>
+    </div>
+  </section>
+
+  <!-- Step 2: Configure -->
+  <div id="config-panel">
+    <div class="config-header">
+      <h3>۲ — تنظیمات سایت: <span id="selected-label"></span></h3>
+    </div>
+    <div class="config-grid">
+
+      <!-- Form column -->
+      <div>
+        <div class="info-strip">
+          💡 اطلاعات کسب‌وکار شما جایگزین موقعیت‌های {{NAME}}، {{ITEM1}} و... می‌شوند. متن‌های رابط کاربری (دکمه‌ها، برچسب‌ها) توسط Claude ترجمه می‌شوند.
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>نام برند / کسب‌وکار</label>
+            <input type="text" id="f-name" placeholder="مثال: فروشگاه رضا">
+          </div>
+          <div class="form-group">
+            <label>آدرس لوگو (URL)</label>
+            <input type="text" id="f-logo" placeholder="https://... یا خالی بگذارید">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>شعار / توضیح کوتاه</label>
+          <input type="text" id="f-tagline" placeholder="مثال: بهترین قیمت، سریع‌ترین ارسال">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>شماره تماس</label>
+            <input type="tel" id="f-phone" placeholder="۰۲۱-...">
+          </div>
+          <div class="form-group">
+            <label>ایمیل</label>
+            <input type="email" id="f-email" placeholder="info@...">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>شهر</label>
+            <input type="text" id="f-city" placeholder="تهران">
+          </div>
+          <div class="form-group">
+            <label>آدرس</label>
+            <input type="text" id="f-address" placeholder="خیابان اصلی، پلاک ۱">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>رنگ اصلی برند</label>
+          <div class="color-row">
+            <input type="color" id="f-color" value="#2563EB">
+            <input type="text" id="f-color-text" placeholder="#2563EB" style="flex:1"
+              oninput="document.getElementById('f-color').value=this.value">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>لینک درگاه پرداخت</label>
+          <input type="text" id="f-payment" placeholder="مثال: https://zarinpal.com/pg/... یا لینک Stripe/PayPal">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>📸 اینستاگرام</label>
+            <input type="text" id="f-instagram" placeholder="@username یا لینک کامل">
+          </div>
+          <div class="form-group">
+            <label>✈️ تلگرام</label>
+            <input type="text" id="f-telegram" placeholder="@username یا t.me/...">
+          </div>
+        </div>
+
+        <hr class="divider">
+
+        <div style="font-size:.82rem;font-weight:600;color:var(--muted);margin-bottom:.75rem">محصولات / خدمات</div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;margin-bottom:.35rem">
+          <div style="font-size:.75rem;color:var(--muted);font-weight:600">نام محصول</div>
+          <div style="font-size:.75rem;color:var(--muted);font-weight:600">قیمت (تومان)</div>
+          <div style="font-size:.75rem;color:var(--muted);font-weight:600">موجودی</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;margin-bottom:.5rem">
+          <input class="form-inline" type="text" id="f-item1" placeholder="محصول اول">
+          <input class="form-inline" type="text" id="f-price1" placeholder="۱۹۹,۰۰۰">
+          <input class="form-inline" type="number" id="f-stock1" placeholder="۱۰" min="0">
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;margin-bottom:.5rem">
+          <input class="form-inline" type="text" id="f-item2" placeholder="محصول دوم">
+          <input class="form-inline" type="text" id="f-price2" placeholder="۲۹۹,۰۰۰">
+          <input class="form-inline" type="number" id="f-stock2" placeholder="۵" min="0">
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;margin-bottom:.5rem">
+          <input class="form-inline" type="text" id="f-item3" placeholder="محصول سوم">
+          <input class="form-inline" type="text" id="f-price3" placeholder="۳۹۹,۰۰۰">
+          <input class="form-inline" type="number" id="f-stock3" placeholder="۳" min="0">
+        </div>
+
+        <div class="action-btns">
+          <button class="btn btn-primary" id="btn-preview">
+            <span id="builder-spinner"></span>
+            👁️ پیش‌نمایش
+          </button>
+          <button class="btn btn-outline" id="btn-download">💾 دانلود HTML</button>
+          <button class="btn btn-outline" id="btn-save" style="background:#f0fdf4;border-color:#86efac;color:#16a34a">☁️ ذخیره در سرور</button>
+        </div>
+      </div>
+
+      <!-- Preview column header (preview loads below) -->
+      <div style="display:flex;align-items:center;justify-content:center;background:#f1f5f9;border-radius:12px;min-height:300px;color:#94a3b8;font-size:0.95rem;text-align:center;padding:2rem;">
+        پس از کلیک روی «پیش‌نمایش» وبسایت شما اینجا نمایش داده می‌شود
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 3: Preview frame -->
+  <div id="preview-section">
+    <div class="preview-header">
+      <div class="preview-dots">
+        <span class="dot dot-r"></span>
+        <span class="dot dot-y"></span>
+        <span class="dot dot-g"></span>
+      </div>
+      <span>پیش‌نمایش — ترجمه خودکار بر اساس IP فعال است</span>
+      <span style="font-size:0.8rem;opacity:0.6">localhost:3000</span>
+    </div>
+    <iframe id="preview-frame" title="Template Preview"></iframe>
+  </div>
+
+  <script>
+    // Sync color picker ↔ text input
+    document.getElementById('f-color').addEventListener('input', function () {
+      document.getElementById('f-color-text').value = this.value;
+    });
+  </script>
+  <script src="/builder.js"></script>
+</body>
+</html>

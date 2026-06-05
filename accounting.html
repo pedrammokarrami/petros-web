@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>پنل حسابداری — Website Builder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #6366f1; --primary-dark: #4f46e5;
+      --bg: #f8fafc; --card: #fff; --border: #e2e8f0;
+      --text: #1e293b; --muted: #64748b;
+      --income: #22c55e; --expense: #ef4444;
+      --radius: 12px; --shadow: 0 2px 16px rgba(0,0,0,0.07);
+    }
+    body { font-family: 'Vazirmatn', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    header {
+      background: #fff; border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem; display: flex; align-items: center;
+      justify-content: space-between; position: sticky; top: 0; z-index: 40;
+    }
+    .logo { font-size: 1.25rem; font-weight: 700; color: var(--primary); }
+    .breadcrumb { font-size: .85rem; color: var(--muted); }
+    .breadcrumb a { color: var(--primary); text-decoration: none; }
+    .header-nav { display: flex; gap: .75rem; }
+    .nav-link { padding: .45rem 1rem; border-radius: 8px; text-decoration: none; font-size: .88rem; font-weight: 500; color: var(--muted); border: 1px solid var(--border); }
+    .nav-link:hover, .nav-link.active { color: var(--primary); border-color: var(--primary); background: #f0f0ff; }
+
+    .page { padding: 2rem; max-width: 1200px; margin: 0 auto; }
+
+    /* Summary cards */
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.25rem; margin-bottom: 2rem; }
+    .card { background: var(--card); border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow); }
+    .card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: .75rem; }
+    .card-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
+    .icon-green { background: #f0fdf4; }
+    .icon-red   { background: #fef2f2; }
+    .icon-blue  { background: #eff6ff; }
+    .icon-purple { background: #f5f3ff; }
+    .card-val { font-size: 1.6rem; font-weight: 700; }
+    .card-val.income  { color: var(--income); }
+    .card-val.expense { color: var(--expense); }
+    .card-val.net-pos { color: #2563eb; }
+    .card-val.net-neg { color: var(--expense); }
+    .card-label { font-size: .82rem; color: var(--muted); margin-top: .15rem; }
+
+    /* Main grid */
+    .main-grid { display: grid; grid-template-columns: 1fr 380px; gap: 1.5rem; align-items: start; }
+    @media (max-width: 900px) { .main-grid { grid-template-columns: 1fr; } }
+
+    /* Charts */
+    .chart-card { background: var(--card); border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow); margin-bottom: 1.5rem; }
+    .chart-title { font-size: 1rem; font-weight: 700; margin-bottom: 1.25rem; display: flex; align-items: center; gap: .5rem; }
+    .chart-wrap { position: relative; height: 250px; }
+
+    /* Transactions table */
+    .table-wrap { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+    .table-header { padding: 1rem 1.25rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .table-title { font-size: 1rem; font-weight: 700; }
+    table { width: 100%; border-collapse: collapse; }
+    th { padding: .75rem 1rem; text-align: right; font-size: .8rem; font-weight: 600; color: var(--muted); background: #f8fafc; border-bottom: 1px solid var(--border); }
+    td { padding: .75rem 1rem; font-size: .88rem; border-bottom: 1px solid var(--border); }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #fafafa; }
+
+    .type-badge { display: inline-flex; align-items: center; gap: .3rem; padding: .2rem .65rem; border-radius: 999px; font-size: .78rem; font-weight: 600; }
+    .type-income  { background: #f0fdf4; color: #16a34a; }
+    .type-expense { background: #fef2f2; color: #dc2626; }
+
+    /* Add form */
+    .add-card { background: var(--card); border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow); }
+    .add-title { font-size: 1rem; font-weight: 700; margin-bottom: 1.25rem; }
+    .form-group { margin-bottom: .875rem; }
+    .form-group label { display: block; font-size: .8rem; font-weight: 600; margin-bottom: .3rem; color: var(--muted); }
+    .form-group input, .form-group select {
+      width: 100%; padding: .6rem .875rem;
+      border: 1.5px solid var(--border); border-radius: 8px;
+      font-family: inherit; font-size: .9rem; outline: none;
+    }
+    .form-group input:focus, .form-group select:focus { border-color: var(--primary); }
+    .type-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; margin-bottom: .875rem; }
+    .type-btn {
+      padding: .6rem; border-radius: 8px; border: 1.5px solid var(--border);
+      font-family: inherit; font-size: .88rem; font-weight: 600;
+      cursor: pointer; background: #fff; color: var(--muted);
+      text-align: center; transition: all .15s;
+    }
+    .type-btn.active-income  { background: #f0fdf4; border-color: #86efac; color: #16a34a; }
+    .type-btn.active-expense { background: #fef2f2; border-color: #fca5a5; color: #dc2626; }
+
+    .btn {
+      width: 100%; padding: .7rem; border: none; border-radius: 8px;
+      font-family: inherit; font-size: .9rem; font-weight: 600;
+      cursor: pointer; margin-top: .5rem;
+    }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-dark); }
+    .btn-icon { background: none; border: none; cursor: pointer; font-size: 1rem; padding: .2rem .4rem; }
+
+    .empty-state { padding: 2rem; text-align: center; color: var(--muted); font-size: .9rem; }
+
+    @media (max-width: 600px) {
+      .page { padding: 1rem; }
+      .cards { grid-template-columns: 1fr 1fr; }
+      th:nth-child(4), td:nth-child(4) { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="logo">💰 پنل حسابداری</div>
+    <span class="breadcrumb"><a href="/">Website Builder</a> ← حسابداری</span>
+  </div>
+  <nav class="header-nav">
+    <a href="/" class="nav-link">🏠 سازنده</a>
+    <a href="/inventory.html" class="nav-link">📦 انبار</a>
+    <a href="/accounting.html" class="nav-link active">💰 حسابداری</a>
+  </nav>
+</header>
+
+<div class="page">
+
+  <!-- Summary -->
+  <div class="cards" id="summary-cards">
+    <div class="card">
+      <div class="card-top">
+        <div class="card-icon icon-green">💵</div>
+      </div>
+      <div class="card-val income" id="stat-income">۰</div>
+      <div class="card-label">کل درآمد (تومان)</div>
+    </div>
+    <div class="card">
+      <div class="card-top">
+        <div class="card-icon icon-red">💸</div>
+      </div>
+      <div class="card-val expense" id="stat-expense">۰</div>
+      <div class="card-label">کل هزینه (تومان)</div>
+    </div>
+    <div class="card">
+      <div class="card-top">
+        <div class="card-icon icon-blue">📊</div>
+      </div>
+      <div class="card-val" id="stat-net">۰</div>
+      <div class="card-label">سود خالص (تومان)</div>
+    </div>
+    <div class="card">
+      <div class="card-top">
+        <div class="card-icon icon-purple">📋</div>
+      </div>
+      <div class="card-val" id="stat-count" style="color:var(--primary)">۰</div>
+      <div class="card-label">تعداد تراکنش</div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+    <!-- Left: charts + table -->
+    <div>
+      <!-- Chart -->
+      <div class="chart-card">
+        <div class="chart-title">📈 نمودار درآمد و هزینه (ماهانه)</div>
+        <div class="chart-wrap">
+          <canvas id="monthChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Donut -->
+      <div class="chart-card" style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:center">
+        <div>
+          <div class="chart-title">🥧 نسبت درآمد / هزینه</div>
+          <div class="chart-wrap" style="height:200px">
+            <canvas id="donutChart"></canvas>
+          </div>
+        </div>
+        <div id="category-list" style="font-size:.85rem;line-height:2"></div>
+      </div>
+
+      <!-- Transaction list -->
+      <div class="table-wrap">
+        <div class="table-header">
+          <span class="table-title">تراکنش‌ها</span>
+          <span id="tx-count" style="font-size:.82rem;color:var(--muted)"></span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>تاریخ</th>
+              <th>توضیح</th>
+              <th>دسته</th>
+              <th>نوع</th>
+              <th>مبلغ</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="tx-tbody">
+            <tr><td colspan="6" class="empty-state">در حال بارگذاری...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Right: add form -->
+    <div class="add-card">
+      <div class="add-title">➕ ثبت تراکنش جدید</div>
+
+      <div class="type-toggle">
+        <button class="type-btn active-income" id="btn-income" onclick="setType('income')">💵 درآمد</button>
+        <button class="type-btn" id="btn-expense" onclick="setType('expense')">💸 هزینه</button>
+      </div>
+      <input type="hidden" id="tx-type" value="income">
+
+      <div class="form-group">
+        <label>مبلغ (تومان)</label>
+        <input type="number" id="tx-amount" min="0" placeholder="مثال: 500000">
+      </div>
+      <div class="form-group">
+        <label>توضیح</label>
+        <input type="text" id="tx-desc" placeholder="مثال: فروش محصول A">
+      </div>
+      <div class="form-group">
+        <label>دسته‌بندی</label>
+        <select id="tx-cat">
+          <option>فروش</option>
+          <option>خرید کالا</option>
+          <option>حقوق</option>
+          <option>اجاره</option>
+          <option>تبلیغات</option>
+          <option>حمل‌ونقل</option>
+          <option>عمومی</option>
+          <option>سایر</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>تاریخ</label>
+        <input type="date" id="tx-date">
+      </div>
+
+      <button class="btn btn-primary" onclick="addTransaction()">ثبت تراکنش</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let transactions = [];
+  let monthChart, donutChart;
+  let selectedType = 'income';
+
+  function setType(type) {
+    selectedType = type;
+    document.getElementById('tx-type').value = type;
+    document.getElementById('btn-income').className  = 'type-btn' + (type === 'income'  ? ' active-income'  : '');
+    document.getElementById('btn-expense').className = 'type-btn' + (type === 'expense' ? ' active-expense' : '');
+  }
+
+  async function load() {
+    try {
+      const res = await fetch('/api/accounting');
+      transactions = await res.json();
+    } catch { transactions = []; }
+    render();
+  }
+
+  function fmt(n) {
+    return Number(n).toLocaleString('fa-IR');
+  }
+
+  function render() {
+    const income  = transactions.filter(t => t.type === 'income').reduce((s,t) => s + t.amount, 0);
+    const expense = transactions.filter(t => t.type === 'expense').reduce((s,t) => s + t.amount, 0);
+    const net     = income - expense;
+
+    document.getElementById('stat-income').textContent  = fmt(income);
+    document.getElementById('stat-expense').textContent = fmt(expense);
+    const netEl = document.getElementById('stat-net');
+    netEl.textContent = fmt(Math.abs(net));
+    netEl.className   = 'card-val ' + (net >= 0 ? 'net-pos' : 'net-neg');
+    document.getElementById('stat-count').textContent = transactions.length;
+    document.getElementById('tx-count').textContent   = `${transactions.length} تراکنش`;
+
+    renderTable();
+    renderMonthChart();
+    renderDonut(income, expense);
+  }
+
+  function renderTable() {
+    const tbody = document.getElementById('tx-tbody');
+    if (transactions.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="6" class="empty-state">هنوز تراکنشی ثبت نشده.</td></tr>`;
+      return;
+    }
+    const sorted = [...transactions].sort((a,b) => b.date.localeCompare(a.date));
+    tbody.innerHTML = sorted.map(t => `
+      <tr>
+        <td style="white-space:nowrap">${t.date}</td>
+        <td>${escHtml(t.description || '—')}</td>
+        <td><span style="font-size:.8rem;color:var(--muted)">${escHtml(t.category || '—')}</span></td>
+        <td><span class="type-badge type-${t.type}">${t.type === 'income' ? '💵 درآمد' : '💸 هزینه'}</span></td>
+        <td style="font-weight:600;color:${t.type==='income'?'#16a34a':'#dc2626'}">${fmt(t.amount)}</td>
+        <td><button class="btn-icon" onclick="deleteTx('${t.id}')" title="حذف">🗑️</button></td>
+      </tr>`).join('');
+  }
+
+  function renderMonthChart() {
+    const months = {};
+    transactions.forEach(t => {
+      const m = t.date?.slice(0, 7) || 'نامشخص';
+      if (!months[m]) months[m] = { income: 0, expense: 0 };
+      months[m][t.type] += t.amount;
+    });
+    const labels  = Object.keys(months).sort();
+    const incomes  = labels.map(m => months[m].income);
+    const expenses = labels.map(m => months[m].expense);
+
+    const ctx = document.getElementById('monthChart').getContext('2d');
+    if (monthChart) monthChart.destroy();
+    monthChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [
+          { label: 'درآمد', data: incomes,  backgroundColor: '#86efac', borderRadius: 6 },
+          { label: 'هزینه', data: expenses, backgroundColor: '#fca5a5', borderRadius: 6 }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { position: 'bottom' } },
+        scales: { y: { beginAtZero: true } }
+      }
+    });
+  }
+
+  function renderDonut(income, expense) {
+    const ctx = document.getElementById('donutChart').getContext('2d');
+    if (donutChart) donutChart.destroy();
+    if (income === 0 && expense === 0) {
+      document.getElementById('category-list').innerHTML = '<span style="color:var(--muted)">هنوز داده‌ای نیست</span>';
+      return;
+    }
+    donutChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['درآمد', 'هزینه'],
+        datasets: [{ data: [income, expense], backgroundColor: ['#86efac', '#fca5a5'], borderWidth: 0 }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, cutout: '65%', plugins: { legend: { display: false } } }
+    });
+
+    const pct = income + expense > 0 ? Math.round(income / (income + expense) * 100) : 0;
+    document.getElementById('category-list').innerHTML = `
+      <div style="margin-bottom:.5rem">💵 <strong>درآمد:</strong> ${pct}%</div>
+      <div>💸 <strong>هزینه:</strong> ${100 - pct}%</div>
+      <hr style="margin:.75rem 0;border-color:var(--border)">
+      <div style="font-size:.78rem;color:var(--muted)">سود خالص:</div>
+      <div style="font-weight:700;color:${income>=expense?'#16a34a':'#dc2626'}">${fmt(income-expense)} تومان</div>`;
+  }
+
+  async function addTransaction() {
+    const amount = parseFloat(document.getElementById('tx-amount').value);
+    const desc   = document.getElementById('tx-desc').value.trim();
+    const cat    = document.getElementById('tx-cat').value;
+    const date   = document.getElementById('tx-date').value;
+
+    if (!amount || amount <= 0) return alert('مبلغ را صحیح وارد کنید');
+    if (!desc)                  return alert('توضیح تراکنش را وارد کنید');
+
+    try {
+      const res = await fetch('/api/accounting', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'add', transaction: { type: selectedType, amount, description: desc, category: cat, date } })
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error || 'خطا');
+      document.getElementById('tx-amount').value = '';
+      document.getElementById('tx-desc').value   = '';
+      await load();
+    } catch (e) {
+      alert('خطا: ' + e.message);
+    }
+  }
+
+  async function deleteTx(id) {
+    if (!confirm('این تراکنش حذف شود؟')) return;
+    try {
+      await fetch('/api/accounting', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'delete', transaction: { id } })
+      });
+      await load();
+    } catch (e) { alert('خطا: ' + e.message); }
+  }
+
+  function escHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  // Default date to today
+  document.getElementById('tx-date').value = new Date().toISOString().split('T')[0];
+
+  load();
+</script>
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{BRAND_NAME}}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --p: {{PRIMARY_COLOR}}; --bg: #fffbf5; --card: #fff; --border: #f0e6d3; --text: #1c1008; --muted: #78716c; --r: 14px; }
+    body { font-family: 'Vazirmatn', sans-serif; background: var(--bg); color: var(--text); }
+
+    #wb-loader { display:none; position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%); background:rgba(0,0,0,.85); color:#fff; padding:.6rem 1.4rem; border-radius:999px; font-size:.85rem; z-index:9999; gap:.5rem; align-items:center; }
+    .spin { width:14px; height:14px; border:2px solid rgba(255,255,255,.3); border-top-color:#fff; border-radius:50%; animation:spin .7s linear infinite; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+
+    nav { background:rgba(255,255,255,.95); backdrop-filter:blur(10px); border-bottom:1px solid var(--border); padding:.875rem 2rem; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:40; }
+    .logo { font-size:1.5rem; font-weight:700; color:var(--p); }
+    .nav-links { display:flex; gap:1.5rem; list-style:none; }
+    .nav-links a { color:var(--text); text-decoration:none; font-weight:500; }
+    .nav-links a:hover { color:var(--p); }
+    .reserve-btn { background:var(--p); color:#fff; border:none; border-radius:999px; padding:.5rem 1.25rem; cursor:pointer; font-family:inherit; font-weight:600; }
+
+    .hero { position:relative; min-height:580px; display:flex; align-items:center; justify-content:center; text-align:center; overflow:hidden; background:linear-gradient(135deg, var(--p) 0%, #1c0a00 100%); color:#fff; padding:3rem 2rem; }
+    .hero-content { position:relative; z-index:2; }
+    .hero-badge { display:inline-block; background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.3); border-radius:999px; padding:.3rem 1rem; font-size:.85rem; margin-bottom:1.5rem; }
+    .hero h1 { font-size:3rem; font-weight:700; margin-bottom:.75rem; }
+    .hero-sub { font-size:1.1rem; opacity:.85; margin-bottom:.5rem; }
+    .hero-tag { opacity:.7; margin-bottom:2rem; }
+    .hero-btns { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
+    .btn-w { background:#fff; color:var(--p); border:none; border-radius:999px; padding:.8rem 2rem; font-weight:700; cursor:pointer; font-family:inherit; text-decoration:none; display:inline-block; }
+    .btn-o { background:transparent; color:#fff; border:2px solid #fff; border-radius:999px; padding:.8rem 2rem; font-weight:600; cursor:pointer; font-family:inherit; text-decoration:none; display:inline-block; }
+
+    section { padding:4rem 2rem; }
+    .container { max-width:1100px; margin:0 auto; }
+    .sec-header { text-align:center; margin-bottom:2.5rem; }
+    .sec-header h2 { font-size:1.85rem; font-weight:700; margin-bottom:.5rem; }
+    .sec-header p { color:var(--muted); }
+    .sec-line { width:60px; height:3px; background:var(--p); border-radius:2px; margin:.75rem auto 0; }
+
+    /* Menu */
+    .menu-tabs { display:flex; gap:.5rem; justify-content:center; margin-bottom:2rem; flex-wrap:wrap; }
+    .tab { padding:.45rem 1.25rem; border:1.5px solid var(--border); border-radius:999px; background:#fff; cursor:pointer; font-family:inherit; font-size:.9rem; font-weight:500; transition:all .2s; }
+    .tab.active { background:var(--p); color:#fff; border-color:var(--p); }
+
+    .menu-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(300px,1fr)); gap:1.25rem; }
+    .menu-card { background:#fff; border-radius:var(--r); padding:1.25rem; display:flex; gap:1rem; align-items:center; box-shadow:0 2px 12px rgba(0,0,0,.05); border:1px solid var(--border); }
+    .menu-img { width:80px; height:80px; background:linear-gradient(135deg,#fde8cc,#ffd0a0); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:2rem; flex-shrink:0; }
+    .menu-info { flex:1; }
+    .menu-name { font-weight:600; font-size:1rem; margin-bottom:.25rem; }
+    .menu-desc { font-size:.82rem; color:var(--muted); margin-bottom:.5rem; }
+    .menu-foot { display:flex; justify-content:space-between; align-items:center; }
+    .menu-price { font-weight:700; color:var(--p); }
+    .order-btn { background:var(--p); color:#fff; border:none; border-radius:8px; padding:.35rem .875rem; cursor:pointer; font-family:inherit; font-size:.82rem; font-weight:600; }
+
+    /* About */
+    .about { background:#fff; }
+    .about-grid { display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:center; }
+    .about-visual { height:350px; background:linear-gradient(135deg, var(--p), #1c0a00); border-radius:20px; display:flex; align-items:center; justify-content:center; font-size:6rem; }
+    .about-text h2 { font-size:1.75rem; font-weight:700; margin-bottom:1rem; }
+    .about-text p { color:var(--muted); line-height:1.8; margin-bottom:1rem; }
+    .stats { display:flex; gap:2rem; margin-top:1.5rem; }
+    .stat-num { font-size:1.75rem; font-weight:700; color:var(--p); }
+    .stat-label { font-size:.82rem; color:var(--muted); }
+
+    /* Reserve */
+    .reserve { background:linear-gradient(135deg, var(--p) 0%, #1c0a00 100%); color:#fff; }
+    .reserve-form { display:grid; grid-template-columns:1fr 1fr 1fr auto; gap:1rem; max-width:800px; margin:1.5rem auto 0; }
+    .reserve-form input, .reserve-form select {
+      padding:.75rem 1rem; border:none; border-radius:8px; font-family:inherit; font-size:.9rem; outline:none;
+    }
+    .reserve-form button { background:rgba(0,0,0,.3); color:#fff; border:2px solid rgba(255,255,255,.5); border-radius:8px; padding:.75rem 1.5rem; cursor:pointer; font-family:inherit; font-weight:700; white-space:nowrap; }
+
+    footer { background:#1c0a00; color:#a8916e; padding:3rem 2rem 1.5rem; }
+    .foot-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(180px,1fr)); gap:2rem; margin-bottom:2rem; }
+    .foot-logo { font-size:1.4rem; font-weight:700; color:#fff; margin-bottom:.75rem; }
+    .foot-col h4 { color:#fff; margin-bottom:.875rem; font-weight:600; }
+    .foot-col ul { list-style:none; }
+    .foot-col li { margin-bottom:.5rem; font-size:.875rem; }
+    .foot-col a { color:#a8916e; text-decoration:none; }
+    .foot-col a:hover { color:#fff; }
+    .foot-bottom { border-top:1px solid #3a2010; padding-top:1.25rem; text-align:center; font-size:.82rem; }
+
+    /* Builder product cards */
+    .products { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px,1fr)); gap:1.5rem; }
+    .p-card { background:#fff; border-radius:var(--r); overflow:hidden; box-shadow:0 2px 16px rgba(0,0,0,.06); transition:transform .2s; border:1px solid var(--border); }
+    .p-card:hover { transform:translateY(-4px); }
+    .p-img { height:200px; background:linear-gradient(135deg,#fde8cc,#ffd0a0); display:flex; align-items:center; justify-content:center; font-size:4rem; }
+    .p-body { padding:1.25rem; }
+    .p-name { font-size:1.05rem; font-weight:600; margin-bottom:.4rem; }
+    .p-desc { color:var(--muted); font-size:.88rem; margin-bottom:1rem; }
+    .p-foot { display:flex; align-items:center; justify-content:space-between; }
+    .p-price { font-size:1.15rem; font-weight:700; color:var(--p); }
+    .add-btn { background:var(--p); color:#fff; border:none; border-radius:8px; padding:.45rem 1rem; cursor:pointer; font-family:inherit; font-weight:600; font-size:.88rem; text-decoration:none; display:inline-block; }
+    @media(max-width:768px) { .nav-links { display:none; } .hero h1 { font-size:2rem; } .about-grid { grid-template-columns:1fr; } .reserve-form { grid-template-columns:1fr 1fr; } }
+    @media(max-width:500px) { .reserve-form { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+
+<div id="wb-loader"><span class="spin"></span><span data-i18n>در حال ترجمه...</span></div>
+
+<nav>
+  <div class="logo">{{LOGO}}</div>
+  <ul class="nav-links">
+    <li><a href="#" data-i18n>خانه</a></li>
+    <li><a href="#menu" data-i18n>منو</a></li>
+    <li><a href="#about" data-i18n>درباره ما</a></li>
+    <li><a href="#footer" data-i18n>تماس</a></li>
+  </ul>
+  <button class="reserve-btn" data-i18n>رزرو میز</button>
+</nav>
+
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge" data-i18n>✨ تجربه‌ای متفاوت از غذا</div>
+    <h1>{{BRAND_NAME}}</h1>
+    <p class="hero-sub">{{TAGLINE}}</p>
+    <p class="hero-tag" data-i18n>غذاهای سنتی با طعمی که فراموش نمی‌کنید</p>
+    <div class="hero-btns">
+      <a href="#menu" class="btn-w" data-i18n>مشاهده منو</a>
+      <a href="{{PAYMENT_LINK}}" class="add-btn" style="padding:.75rem 2rem;font-size:.95rem;font-weight:700;border-radius:999px" target="_blank" rel="noopener" data-i18n>💳 پرداخت آنلاین</a>
+      <a href="#reserve" class="btn-o" data-i18n>رزرو میز آنلاین</a>
+    </div>
+  </div>
+</section>
+
+<section id="menu">
+  <div class="container">
+    <div class="sec-header">
+      <h2 data-i18n>منوی ما</h2>
+      <p data-i18n>انتخابی از بهترین غذاهای ایرانی و بین‌المللی</p>
+      <div class="sec-line"></div>
+    </div>
+    <div class="menu-tabs">
+      <button class="tab active" data-i18n>همه</button>
+      <button class="tab" data-i18n>پیش‌غذا</button>
+      <button class="tab" data-i18n>غذای اصلی</button>
+      <button class="tab" data-i18n>دسر</button>
+      <button class="tab" data-i18n>نوشیدنی</button>
+    </div>
+    <div class="products">{{PRODUCTS_GRID}}</div>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-visual">🍽️</div>
+      <div class="about-text">
+        <h2 data-i18n>داستان ما</h2>
+        <p data-i18n>رستوران ما با هدف ارائه بهترین تجربه غذایی تأسیس شد. هر روز با عشق و دقت آماده می‌کنیم تا شما از هر لقمه لذت ببرید.</p>
+        <p data-i18n>سرآشپزان ما با بیش از یک دهه تجربه، بهترین دستورهای سنتی را با تکنیک‌های مدرن ترکیب می‌کنند.</p>
+        <div class="stats">
+          <div><div class="stat-num">+۱۵</div><div class="stat-label" data-i18n>سال تجربه</div></div>
+          <div><div class="stat-num">+۵۰</div><div class="stat-label" data-i18n>آیتم منو</div></div>
+          <div><div class="stat-num">+۱۰k</div><div class="stat-label" data-i18n>مشتری راضی</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="reserve" id="reserve">
+  <div class="container" style="text-align:center;">
+    <h2 data-i18n>رزرو میز آنلاین</h2>
+    <p data-i18n>جای خود را از قبل رزرو کنید و از انتظار بی‌مورد جلوگیری کنید</p>
+    <div class="reserve-form">
+      <input type="text" data-i18n-placeholder placeholder="نام شما">
+      <input type="date">
+      <input type="time">
+      <button data-i18n>تأیید رزرو</button>
+    </div>
+  </div>
+</section>
+
+<footer id="footer">
+  <div class="container">
+    <div class="foot-grid">
+      <div><div class="foot-logo">{{BRAND_NAME}}</div><p style="font-size:.875rem" data-i18n>رستوران با کیفیت و اصالت، محل گردهمایی خانواده‌ها</p></div>
+      <div class="foot-col">
+        <h4 data-i18n>منو</h4>
+        <ul>
+          <li><a href="#" data-i18n>پیش‌غذا</a></li>
+          <li><a href="#" data-i18n>غذای اصلی</a></li>
+          <li><a href="#" data-i18n>دسر و نوشیدنی</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4 data-i18n>اطلاعات</h4>
+        <ul>
+          <li><span data-i18n>ساعت کاری:</span> <span data-i18n>۱۲ تا ۲۴</span></li>
+          <li>📞 {{PHONE}}</li>
+          <li>📍 {{CITY}} — {{ADDRESS}}</li>
+          <li style="margin-top:.5rem;display:flex;gap:.75rem">{{SOCIAL_LINKS}}</li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom"><span data-i18n>تمامی حقوق محفوظ است</span> &copy; 2024 {{BRAND_NAME}}</div>
+  </div>
+</footer>
+
+<script src="/translator.js"></script>
+</body>
+</html>

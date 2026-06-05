@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{BRAND_NAME}}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --p: {{PRIMARY_COLOR}}; --bg: #f8fafc; --card: #fff; --border: #e2e8f0; --text: #1e293b; --muted: #64748b; --r: 12px; }
+    body { font-family: 'Vazirmatn', sans-serif; background: var(--bg); color: var(--text); }
+
+    /* Loader */
+    #wb-loader { display:none; position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%); background:rgba(0,0,0,.85); color:#fff; padding:.6rem 1.4rem; border-radius:999px; font-size:.85rem; z-index:9999; gap:.5rem; align-items:center; }
+    .spin { width:14px; height:14px; border:2px solid rgba(255,255,255,.3); border-top-color:#fff; border-radius:50%; animation:spin .7s linear infinite; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+
+    nav { background:#fff; border-bottom:1px solid var(--border); padding:.875rem 2rem; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:40; }
+    .logo { font-size:1.35rem; font-weight:700; color:var(--p); }
+    .nav-links { display:flex; gap:1.5rem; list-style:none; }
+    .nav-links a { color:var(--text); text-decoration:none; font-weight:500; font-size:.95rem; }
+    .nav-links a:hover { color:var(--p); }
+    .nav-right { display:flex; gap:.75rem; align-items:center; }
+    .search { border:1.5px solid var(--border); border-radius:999px; padding:.45rem 1rem; font-family:inherit; font-size:.9rem; outline:none; width:200px; }
+    .cart-btn { background:var(--p); color:#fff; border:none; border-radius:999px; padding:.5rem 1.25rem; cursor:pointer; font-family:inherit; font-weight:600; font-size:.9rem; }
+
+    .hero { background:linear-gradient(135deg, var(--p) 0%, #0f172a 100%); color:#fff; text-align:center; padding:5rem 2rem; }
+    .hero h1 { font-size:2.75rem; font-weight:700; margin-bottom:.75rem; }
+    .hero-sub { font-size:1.1rem; opacity:.85; margin-bottom:.5rem; }
+    .hero-tag { font-size:1rem; opacity:.7; margin-bottom:2rem; }
+    .hero-btns { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
+    .btn-w { background:#fff; color:var(--p); border:none; border-radius:999px; padding:.8rem 2rem; font-size:1rem; font-weight:700; cursor:pointer; font-family:inherit; text-decoration:none; display:inline-block; }
+    .btn-o { background:transparent; color:#fff; border:2px solid #fff; border-radius:999px; padding:.8rem 2rem; font-size:1rem; font-weight:600; cursor:pointer; font-family:inherit; text-decoration:none; display:inline-block; }
+
+    .section { padding:4rem 2rem; }
+    .container { max-width:1200px; margin:0 auto; }
+    .sec-title { text-align:center; font-size:1.85rem; font-weight:700; margin-bottom:2.5rem; }
+    .sec-title em { color:var(--p); font-style:normal; }
+
+    .products { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px,1fr)); gap:1.5rem; }
+    .p-card { background:var(--card); border-radius:var(--r); overflow:hidden; box-shadow:0 2px 16px rgba(0,0,0,.06); transition:transform .2s; }
+    .p-card:hover { transform:translateY(-4px); }
+    .p-img { height:220px; background:linear-gradient(135deg,#f1f5f9,#e2e8f0); display:flex; align-items:center; justify-content:center; font-size:4rem; }
+    .p-body { padding:1.25rem; }
+    .p-name { font-size:1.05rem; font-weight:600; margin-bottom:.4rem; }
+    .p-desc { color:var(--muted); font-size:.88rem; margin-bottom:1rem; }
+    .p-foot { display:flex; align-items:center; justify-content:space-between; }
+    .p-price { font-size:1.15rem; font-weight:700; color:var(--p); }
+    .add-btn { background:var(--p); color:#fff; border:none; border-radius:8px; padding:.45rem 1rem; cursor:pointer; font-family:inherit; font-weight:600; font-size:.88rem; }
+
+    .features { background:#fff; }
+    .feat-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:2rem; text-align:center; }
+    .feat { padding:1.5rem 1rem; }
+    .feat-icon { font-size:2.5rem; margin-bottom:.75rem; }
+    .feat-title { font-size:1rem; font-weight:600; margin-bottom:.4rem; }
+    .feat-desc { color:var(--muted); font-size:.875rem; }
+
+    .promo { background:var(--p); color:#fff; text-align:center; padding:3rem 2rem; }
+    .promo h2 { font-size:1.75rem; margin-bottom:.75rem; }
+    .promo p { opacity:.85; margin-bottom:1.5rem; }
+    .promo-form { display:flex; max-width:480px; margin:0 auto; }
+    .promo-form input { flex:1; padding:.8rem 1.25rem; border:none; border-radius:999px 0 0 999px; font-family:inherit; font-size:.95rem; outline:none; }
+    .promo-form button { background:rgba(0,0,0,.3); color:#fff; border:none; border-radius:0 999px 999px 0; padding:.8rem 1.5rem; cursor:pointer; font-family:inherit; font-weight:700; }
+
+    footer { background:#1e293b; color:#94a3b8; padding:3rem 2rem 1.5rem; }
+    .foot-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(180px,1fr)); gap:2rem; margin-bottom:2rem; }
+    .foot-logo { font-size:1.3rem; font-weight:700; color:#fff; margin-bottom:.75rem; }
+    .foot-desc { font-size:.875rem; }
+    .foot-col h4 { color:#fff; font-weight:600; margin-bottom:.875rem; font-size:.95rem; }
+    .foot-col ul { list-style:none; }
+    .foot-col li { margin-bottom:.5rem; }
+    .foot-col a { color:#94a3b8; text-decoration:none; font-size:.875rem; }
+    .foot-col a:hover { color:#fff; }
+    .foot-bottom { border-top:1px solid #334155; padding-top:1.25rem; text-align:center; font-size:.82rem; }
+
+    @media(max-width:768px) { .nav-links { display:none; } .hero h1 { font-size:1.9rem; } .promo-form { flex-direction:column; gap:.5rem; } .promo-form input, .promo-form button { border-radius:999px; } }
+  </style>
+</head>
+<body>
+
+<div id="wb-loader"><span class="spin"></span><span data-i18n>در حال ترجمه...</span></div>
+
+<nav>
+  <div class="logo">{{LOGO}}</div>
+  <ul class="nav-links">
+    <li><a href="#" data-i18n>صفحه اصلی</a></li>
+    <li><a href="#products" data-i18n>محصولات</a></li>
+    <li><a href="#about" data-i18n>درباره ما</a></li>
+    <li><a href="#footer" data-i18n>تماس</a></li>
+  </ul>
+  <div class="nav-right">
+    <input class="search" type="search" data-i18n-placeholder placeholder="جستجوی محصول...">
+    <button class="cart-btn" data-i18n>🛒 سبد خرید</button>
+  </div>
+</nav>
+
+<section class="hero">
+  <h1>{{BRAND_NAME}}</h1>
+  <p class="hero-sub">{{TAGLINE}}</p>
+  <p class="hero-tag" data-i18n>بهترین محصولات با ضمانت اصالت و ارسال سریع</p>
+  <div class="hero-btns">
+    <a href="#products" class="btn-w" data-i18n>مشاهده محصولات</a>
+    <a href="{{PAYMENT_LINK}}" class="add-btn" style="padding:.75rem 2rem;font-size:.95rem;font-weight:700;border-radius:999px" target="_blank" rel="noopener" data-i18n>💳 پرداخت آنلاین</a>
+    <a href="#footer" class="btn-o" data-i18n>تماس با ما</a>
+  </div>
+</section>
+
+<section class="section" id="products">
+  <div class="container">
+    <h2 class="sec-title"><em data-i18n>محصولات</em> <span data-i18n>برگزیده</span></h2>
+    <div class="products">{{PRODUCTS_GRID}}</div>
+  </div>
+</section>
+
+<section class="section features" id="about">
+  <div class="container">
+    <h2 class="sec-title" data-i18n>چرا از ما خرید کنید؟</h2>
+    <div class="feat-grid">
+      <div class="feat"><div class="feat-icon">🚚</div><div class="feat-title" data-i18n>ارسال سریع</div><p class="feat-desc" data-i18n>تحویل درب منزل در کمتر از ۴۸ ساعت</p></div>
+      <div class="feat"><div class="feat-icon">✅</div><div class="feat-title" data-i18n>ضمانت اصالت</div><p class="feat-desc" data-i18n>تمامی کالاها دارای گواهی اصالت هستند</p></div>
+      <div class="feat"><div class="feat-icon">💳</div><div class="feat-title" data-i18n>پرداخت امن</div><p class="feat-desc" data-i18n>درگاه پرداخت رمزنگاری‌شده و ایمن</p></div>
+      <div class="feat"><div class="feat-icon">🔄</div><div class="feat-title" data-i18n>بازگشت آسان</div><p class="feat-desc" data-i18n>۷ روز ضمانت بازگشت کالا بدون سوال</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="promo">
+  <div class="container">
+    <h2 data-i18n>عضو خبرنامه ما شوید</h2>
+    <p data-i18n>از تخفیف‌های ویژه و جدیدترین محصولات اطلاع‌رسانی شوید</p>
+    <div class="promo-form">
+      <input type="email" data-i18n-placeholder placeholder="ایمیل شما...">
+      <button data-i18n>عضویت رایگان</button>
+    </div>
+  </div>
+</section>
+
+<footer id="footer">
+  <div class="container">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-logo">{{BRAND_NAME}}</div>
+        <p class="foot-desc" data-i18n>فروشگاه آنلاین معتبر با سال‌ها تجربه در ارائه بهترین محصولات</p>
+      </div>
+      <div class="foot-col">
+        <h4 data-i18n>دسترسی سریع</h4>
+        <ul>
+          <li><a href="#" data-i18n>صفحه اصلی</a></li>
+          <li><a href="#products" data-i18n>محصولات</a></li>
+          <li><a href="#" data-i18n>تخفیف‌ها</a></li>
+          <li><a href="#" data-i18n>وبلاگ</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4 data-i18n>پشتیبانی</h4>
+        <ul>
+          <li><a href="#" data-i18n>پیگیری سفارش</a></li>
+          <li><a href="#" data-i18n>مرجوعی کالا</a></li>
+          <li><a href="#" data-i18n>سوالات متداول</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4 data-i18n>تماس با ما</h4>
+        <ul>
+          <li>📞 {{PHONE}}</li>
+          <li>📧 {{EMAIL}}</li>
+          <li>📍 {{CITY}}</li>
+          <li style="margin-top:.5rem;display:flex;gap:.75rem">{{SOCIAL_LINKS}}</li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span data-i18n>تمامی حقوق محفوظ است</span> &copy; 2024 {{BRAND_NAME}}
+    </div>
+  </div>
+</footer>
+
+<script src="/translator.js"></script>
+</body>
+</html>

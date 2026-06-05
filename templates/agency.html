@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{BRAND_NAME}}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --p: {{PRIMARY_COLOR}}; --bg: #fafafa; --card: #fff; --border: #e5e7eb; --text: #111827; --muted: #6b7280; --r: 12px; }
+    body { font-family: 'Vazirmatn', sans-serif; background: var(--bg); color: var(--text); }
+
+    #wb-loader { display:none; position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%); background:rgba(0,0,0,.85); color:#fff; padding:.6rem 1.4rem; border-radius:999px; font-size:.85rem; z-index:9999; gap:.5rem; align-items:center; }
+    .spin { width:14px; height:14px; border:2px solid rgba(255,255,255,.3); border-top-color:#fff; border-radius:50%; animation:spin .7s linear infinite; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+
+    nav { background:#fff; border-bottom:1px solid var(--border); padding:.875rem 2rem; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:40; }
+    .logo { font-size:1.35rem; font-weight:700; color:var(--p); }
+    .nav-links { display:flex; gap:1.75rem; list-style:none; }
+    .nav-links a { color:var(--muted); text-decoration:none; font-size:.9rem; font-weight:500; }
+    .nav-links a:hover { color:var(--text); }
+    .start-btn { background:var(--text); color:#fff; border:none; border-radius:8px; padding:.5rem 1.25rem; cursor:pointer; font-family:inherit; font-weight:600; font-size:.9rem; }
+
+    .hero { padding:7rem 2rem 5rem; background:linear-gradient(135deg, #fff 60%, rgba(79,70,229,.06) 100%); text-align:center; }
+    .hero-tag { display:inline-flex; align-items:center; gap:.4rem; background:#ede9fe; color:var(--p); border-radius:999px; padding:.35rem 1rem; font-size:.82rem; font-weight:600; margin-bottom:1.5rem; }
+    .hero h1 { font-size:3.5rem; font-weight:700; line-height:1.1; margin-bottom:1rem; max-width:700px; margin-left:auto; margin-right:auto; }
+    .hero h1 span { color:var(--p); }
+    .hero p { color:var(--muted); font-size:1.1rem; max-width:550px; margin:0 auto 2rem; }
+    .hero-btns { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
+    .btn-dark { background:var(--text); color:#fff; border:none; border-radius:8px; padding:.875rem 2rem; font-weight:700; cursor:pointer; font-family:inherit; text-decoration:none; display:inline-block; }
+    .btn-light { background:#fff; color:var(--text); border:1.5px solid var(--border); border-radius:8px; padding:.875rem 2rem; font-weight:600; cursor:pointer; font-family:inherit; text-decoration:none; display:inline-block; }
+    .clients { margin-top:3.5rem; }
+    .clients p { color:var(--muted); font-size:.85rem; margin-bottom:1.25rem; }
+    .clients-logos { display:flex; gap:2rem; justify-content:center; flex-wrap:wrap; }
+    .client-logo { background:var(--border); border-radius:8px; padding:.5rem 1.25rem; font-size:.85rem; color:var(--muted); font-weight:600; }
+
+    section { padding:4rem 2rem; }
+    .container { max-width:1100px; margin:0 auto; }
+    .sec-center { text-align:center; margin-bottom:2.5rem; }
+    .sec-center h2 { font-size:1.85rem; font-weight:700; margin-bottom:.5rem; }
+    .sec-center p { color:var(--muted); }
+
+    /* Services */
+    .services-bg { background:#fff; }
+    .srv-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(240px,1fr)); gap:1.5rem; }
+    .srv-card { border:2px solid var(--border); border-radius:var(--r); padding:2rem; transition:border-color .2s, transform .2s; }
+    .srv-card:hover { border-color:var(--p); transform:translateY(-3px); }
+    .srv-num { font-size:.82rem; font-weight:700; color:var(--p); margin-bottom:.5rem; }
+    .srv-icon { font-size:2.25rem; margin-bottom:.875rem; }
+    .srv-title { font-size:1.05rem; font-weight:700; margin-bottom:.5rem; }
+    .srv-desc { color:var(--muted); font-size:.875rem; line-height:1.7; }
+
+    /* Portfolio */
+    .portfolio-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(320px,1fr)); gap:1.5rem; }
+    .port-card { background:#fff; border-radius:var(--r); overflow:hidden; border:1px solid var(--border); }
+    .port-img { height:220px; background:linear-gradient(135deg, var(--p), #1e1b4b); display:flex; align-items:center; justify-content:center; font-size:4rem; }
+    .port-body { padding:1.25rem; display:flex; align-items:center; justify-content:space-between; }
+    .port-name { font-weight:600; }
+    .port-cat { font-size:.8rem; color:var(--muted); }
+    .port-arrow { font-size:1.25rem; color:var(--p); }
+
+    /* Team */
+    .team-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:1.5rem; }
+    .team-card { background:#fff; border-radius:var(--r); padding:1.75rem; text-align:center; border:1px solid var(--border); }
+    .team-avatar { width:80px; height:80px; border-radius:50%; background:linear-gradient(135deg,var(--p),#1e1b4b); display:flex; align-items:center; justify-content:center; font-size:2rem; margin:0 auto 1rem; }
+    .team-name { font-weight:700; font-size:1rem; margin-bottom:.25rem; }
+    .team-role { font-size:.82rem; color:var(--p); font-weight:500; }
+
+    /* Contact banner */
+    .contact-banner { background:linear-gradient(135deg, var(--p) 0%, #1e1b4b 100%); color:#fff; border-radius:20px; margin:0 2rem; padding:4rem 2rem; text-align:center; }
+    .contact-banner h2 { font-size:2rem; margin-bottom:.75rem; }
+    .contact-banner p { opacity:.85; margin-bottom:2rem; }
+    .contact-form { display:grid; grid-template-columns:1fr 1fr auto; gap:1rem; max-width:700px; margin:0 auto; }
+    .contact-form input { padding:.75rem 1rem; border:none; border-radius:8px; font-family:inherit; outline:none; }
+    .contact-form button { background:rgba(0,0,0,.3); color:#fff; border:1px solid rgba(255,255,255,.3); border-radius:8px; padding:.75rem 1.5rem; cursor:pointer; font-family:inherit; font-weight:700; white-space:nowrap; }
+
+    footer { background:#111827; color:#6b7280; padding:3rem 2rem 1.5rem; }
+    .foot-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(180px,1fr)); gap:2rem; margin-bottom:2rem; }
+    .foot-logo { font-size:1.3rem; font-weight:700; color:#fff; margin-bottom:.75rem; }
+    .foot-col h4 { color:#f9fafb; font-weight:600; margin-bottom:.875rem; }
+    .foot-col ul { list-style:none; }
+    .foot-col li { margin-bottom:.5rem; font-size:.875rem; }
+    .foot-col a { color:#6b7280; text-decoration:none; }
+    .foot-col a:hover { color:#fff; }
+    .foot-bottom { border-top:1px solid #1f2937; padding-top:1.25rem; text-align:center; font-size:.82rem; }
+
+    @media(max-width:768px) { .nav-links { display:none; } .hero h1 { font-size:2.25rem; } .contact-form { grid-template-columns:1fr; } }
+    /* Builder product grid */
+    .products { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px,1fr)); gap:1.5rem; }
+    .p-card { background:var(--card,#fff); border-radius:var(--r,12px); overflow:hidden; box-shadow:0 2px 16px rgba(0,0,0,.07); transition:transform .2s; border:1px solid var(--border,#e2e8f0); }
+    .p-card:hover { transform:translateY(-4px); }
+    .p-img { height:200px; background:linear-gradient(135deg,#f1f5f9,#e2e8f0); display:flex; align-items:center; justify-content:center; font-size:4rem; }
+    .p-body { padding:1.25rem; }
+    .p-name { font-size:1.05rem; font-weight:600; margin-bottom:.4rem; }
+    .p-desc { color:var(--muted,#64748b); font-size:.88rem; margin-bottom:1rem; opacity:.8; }
+    .p-foot { display:flex; align-items:center; justify-content:space-between; }
+    .p-price { font-size:1.15rem; font-weight:700; color:var(--p); }
+    .add-btn { background:var(--p); color:#fff; border:none; border-radius:8px; padding:.45rem 1rem; cursor:pointer; font-family:inherit; font-weight:600; font-size:.88rem; text-decoration:none; display:inline-block; }
+  </style>
+</head>
+<body>
+
+<div id="wb-loader"><span class="spin"></span><span data-i18n>در حال ترجمه...</span></div>
+
+<nav>
+  <div class="logo">{{LOGO}}</div>
+  <ul class="nav-links">
+    <li><a href="#services" data-i18n>خدمات</a></li>
+    <li><a href="#portfolio" data-i18n>نمونه کار</a></li>
+    <li><a href="#team" data-i18n>تیم</a></li>
+    <li><a href="#contact" data-i18n>تماس</a></li>
+  </ul>
+  <button class="start-btn" data-i18n>شروع پروژه</button>
+</nav>
+
+<section class="hero">
+  <div class="hero-tag" data-i18n>🏆 آژانس دیجیتال برتر</div>
+  <h1>{{BRAND_NAME}}<br><span data-i18n>خلق تجربه‌های</span> <span>{{TAGLINE}}</span></h1>
+  <p data-i18n>از استراتژی تا اجرا — ما کنار شما هستیم تا برند دیجیتال قدرتمندی بسازیم</p>
+  <div class="hero-btns">
+    <a href="#contact" class="btn-dark" data-i18n>شروع پروژه</a>
+    <a href="{{PAYMENT_LINK}}" class="add-btn" style="padding:.75rem 2rem;font-size:.95rem;font-weight:700;border-radius:999px" target="_blank" rel="noopener" data-i18n>💳 پرداخت آنلاین</a>
+    <a href="#portfolio" class="btn-light" data-i18n>نمونه کارها</a>
+  </div>
+  <div class="clients">
+    <p data-i18n>مورد اعتماد شرکت‌های پیشرو</p>
+    <div class="clients-logos">
+      <span class="client-logo" data-i18n>استارتاپ A</span>
+      <span class="client-logo" data-i18n>شرکت B</span>
+      <span class="client-logo" data-i18n>برند C</span>
+      <span class="client-logo" data-i18n>گروه D</span>
+    </div>
+  </div>
+</section>
+
+<section class="services-bg" id="services">
+  <div class="container">
+    <div class="sec-center">
+      <h2 data-i18n>خدمات ما</h2>
+      <p data-i18n>مجموعه کاملی از خدمات دیجیتال برای رشد کسب‌وکار شما</p>
+    </div>
+    <div class="srv-grid">
+      <div class="srv-card"><div class="srv-num">01</div><div class="srv-icon">🎨</div><div class="srv-title" data-i18n>طراحی UI/UX</div><p class="srv-desc" data-i18n>طراحی رابط کاربری زیبا و تجربه کاربری روان که تبدیل را افزایش می‌دهد</p></div>
+      <div class="srv-card"><div class="srv-num">02</div><div class="srv-icon">💻</div><div class="srv-title" data-i18n>توسعه وب</div><p class="srv-desc" data-i18n>ساخت وبسایت‌ها و اپلیکیشن‌های مدرن با آخرین تکنولوژی‌ها</p></div>
+      <div class="srv-card"><div class="srv-num">03</div><div class="srv-icon">📱</div><div class="srv-title" data-i18n>اپلیکیشن موبایل</div><p class="srv-desc" data-i18n>توسعه اپ iOS و Android با React Native یا Flutter</p></div>
+      <div class="srv-card"><div class="srv-num">04</div><div class="srv-icon">📈</div><div class="srv-title" data-i18n>بازاریابی دیجیتال</div><p class="srv-desc" data-i18n>سئو، تبلیغات آنلاین، و استراتژی محتوا برای رشد ارگانیک</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="portfolio">
+  <div class="container">
+    <div class="sec-center">
+      <h2 data-i18n>نمونه کارهای ما</h2>
+      <p data-i18n>پروژه‌هایی که به آن‌ها افتخار می‌کنیم</p>
+    </div>
+    <div class="portfolio-grid">
+      <div class="products">{{PRODUCTS_GRID}}</div>
+    </div>
+  </div>
+</section>
+
+<section id="team">
+  <div class="container">
+    <div class="sec-center">
+      <h2 data-i18n>تیم ما</h2>
+      <p data-i18n>متخصصانی که پروژه شما را به واقعیت تبدیل می‌کنند</p>
+    </div>
+    <div class="team-grid">
+      <div class="team-card"><div class="team-avatar">👨‍💼</div><div class="team-name" data-i18n>مدیر پروژه</div><div class="team-role" data-i18n>استراتژیست ارشد</div></div>
+      <div class="team-card"><div class="team-avatar">👩‍🎨</div><div class="team-name" data-i18n>طراح ارشد</div><div class="team-role" data-i18n>UI/UX Designer</div></div>
+      <div class="team-card"><div class="team-avatar">👨‍💻</div><div class="team-name" data-i18n>توسعه‌دهنده ارشد</div><div class="team-role" data-i18n>Full-Stack Developer</div></div>
+      <div class="team-card"><div class="team-avatar">📊</div><div class="team-name" data-i18n>متخصص سئو</div><div class="team-role" data-i18n>Digital Marketer</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="contact-banner" id="contact">
+  <h2 data-i18n>پروژه‌ای دارید؟ بیایید صحبت کنیم</h2>
+  <p data-i18n>مشاوره رایگان — پاسخ ما کمتر از ۲۴ ساعت</p>
+  <div class="contact-form">
+    <input type="text" data-i18n-placeholder placeholder="نام شما">
+    <input type="email" data-i18n-placeholder placeholder="ایمیل شما">
+    <button data-i18n>ارسال درخواست</button>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div><div class="foot-logo">{{BRAND_NAME}}</div><p style="font-size:.875rem" data-i18n>آژانس دیجیتال خلاق — از ایده تا اجرا</p></div>
+      <div class="foot-col"><h4 data-i18n>خدمات</h4><ul><li><a href="#" data-i18n>طراحی</a></li><li><a href="#" data-i18n>توسعه</a></li><li><a href="#" data-i18n>بازاریابی</a></li></ul></div>
+      <div class="foot-col"><h4 data-i18n>تماس</h4><ul><li>{{PHONE}}</li><li>{{EMAIL}}</li><li>{{CITY}}</li><li style="margin-top:.5rem;display:flex;gap:.75rem">{{SOCIAL_LINKS}}</li></ul></div>
+    </div>
+    <div class="foot-bottom"><span data-i18n>تمامی حقوق محفوظ است</span> &copy; 2024 {{BRAND_NAME}}</div>
+  </div>
+</footer>
+
+<script src="/translator.js"></script>
+</body>
+</html>

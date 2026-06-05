@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{BRAND_NAME}}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --p: {{PRIMARY_COLOR}}; --bg: #f0f9ff; --card: #fff; --border: #bae6fd; --text: #0c1a2e; --muted: #475569; --r: 12px; }
+    body { font-family: 'Vazirmatn', sans-serif; background: var(--bg); color: var(--text); }
+
+    #wb-loader { display:none; position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%); background:rgba(0,0,0,.85); color:#fff; padding:.6rem 1.4rem; border-radius:999px; font-size:.85rem; z-index:9999; gap:.5rem; align-items:center; }
+    .spin { width:14px; height:14px; border:2px solid rgba(255,255,255,.3); border-top-color:#fff; border-radius:50%; animation:spin .7s linear infinite; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+
+    /* Top bar */
+    .topbar { background:var(--p); color:#fff; padding:.4rem 2rem; font-size:.82rem; display:flex; justify-content:space-between; }
+    .topbar a { color:#fff; text-decoration:none; }
+
+    nav { background:#fff; border-bottom:1px solid var(--border); padding:.875rem 2rem; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:40; }
+    .logo { font-size:1.35rem; font-weight:700; color:var(--p); display:flex; align-items:center; gap:.4rem; }
+    .nav-links { display:flex; gap:1.5rem; list-style:none; }
+    .nav-links a { color:var(--muted); text-decoration:none; font-size:.9rem; }
+    .nav-links a:hover { color:var(--p); }
+    .appt-btn { background:var(--p); color:#fff; border:none; border-radius:8px; padding:.5rem 1.25rem; cursor:pointer; font-family:inherit; font-weight:600; font-size:.9rem; }
+
+    .hero { background:linear-gradient(135deg, #fff 50%, var(--bg) 100%); padding:5rem 2rem; }
+    .hero-inner { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:center; }
+    .hero-badge { display:inline-flex; gap:.4rem; align-items:center; background:#e0f2fe; color:var(--p); border-radius:999px; padding:.35rem 1rem; font-size:.82rem; font-weight:600; margin-bottom:1.25rem; }
+    .hero h1 { font-size:2.75rem; font-weight:700; line-height:1.2; margin-bottom:.875rem; }
+    .hero p { color:var(--muted); margin-bottom:1.75rem; font-size:1rem; }
+    .hero-btns { display:flex; gap:1rem; flex-wrap:wrap; }
+    .btn-p { background:var(--p); color:#fff; border:none; border-radius:8px; padding:.8rem 2rem; font-weight:700; cursor:pointer; font-family:inherit; text-decoration:none; display:inline-block; }
+    .btn-o { background:#fff; color:var(--p); border:2px solid var(--p); border-radius:8px; padding:.8rem 2rem; font-weight:600; cursor:pointer; font-family:inherit; text-decoration:none; display:inline-block; }
+    .hero-card { background:#fff; border-radius:20px; padding:2rem; box-shadow:0 8px 32px rgba(2,132,199,.12); border:1px solid var(--border); }
+    .hero-card h3 { font-size:1.1rem; font-weight:700; margin-bottom:1rem; color:var(--p); }
+    .info-row { display:flex; align-items:center; gap:.75rem; padding:.6rem 0; border-bottom:1px solid var(--border); font-size:.9rem; }
+    .info-row:last-child { border-bottom:none; }
+
+    section { padding:4rem 2rem; }
+    .container { max-width:1100px; margin:0 auto; }
+    .sec-center { text-align:center; margin-bottom:2.5rem; }
+    .sec-center h2 { font-size:1.85rem; font-weight:700; margin-bottom:.5rem; }
+    .sec-center p { color:var(--muted); }
+
+    /* Services */
+    .srv-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(240px,1fr)); gap:1.25rem; }
+    .srv-card { background:#fff; border-radius:var(--r); padding:1.75rem; border:1px solid var(--border); transition:border-color .2s, transform .2s; }
+    .srv-card:hover { border-color:var(--p); transform:translateY(-3px); }
+    .srv-icon { font-size:2.25rem; margin-bottom:.875rem; }
+    .srv-title { font-size:1rem; font-weight:700; margin-bottom:.4rem; }
+    .srv-desc { color:var(--muted); font-size:.875rem; line-height:1.7; margin-bottom:.875rem; }
+    .srv-price { font-weight:700; color:var(--p); font-size:.9rem; }
+
+    /* Doctors */
+    .doc-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(240px,1fr)); gap:1.5rem; }
+    .doc-card { background:#fff; border-radius:var(--r); overflow:hidden; border:1px solid var(--border); text-align:center; padding-bottom:1.5rem; }
+    .doc-img { height:180px; background:linear-gradient(135deg, var(--p), #0c1a2e); display:flex; align-items:center; justify-content:center; font-size:4.5rem; }
+    .doc-body { padding:1.25rem 1.25rem 0; }
+    .doc-spec { display:inline-block; background:#e0f2fe; color:var(--p); border-radius:999px; padding:.2rem .75rem; font-size:.75rem; font-weight:600; margin-bottom:.75rem; }
+    .doc-name { font-size:1.05rem; font-weight:700; margin-bottom:.25rem; }
+    .doc-bio { font-size:.82rem; color:var(--muted); margin-bottom:1rem; }
+    .doc-btn { background:transparent; color:var(--p); border:1.5px solid var(--p); border-radius:8px; padding:.45rem 1.25rem; cursor:pointer; font-family:inherit; font-weight:600; font-size:.85rem; }
+
+    /* Appointment form */
+    .appt-section { background:linear-gradient(135deg, var(--p) 0%, #0c1a2e 100%); color:#fff; }
+    .appt-inner { max-width:700px; margin:0 auto; text-align:center; }
+    .appt-inner h2 { font-size:1.85rem; margin-bottom:.75rem; }
+    .appt-inner p { opacity:.85; margin-bottom:2rem; }
+    .appt-form { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+    .appt-form input, .appt-form select, .appt-form textarea {
+      padding:.75rem 1rem; border:none; border-radius:8px; font-family:inherit; font-size:.9rem; outline:none; background:rgba(255,255,255,.95);
+    }
+    .appt-form textarea { grid-column:span 2; min-height:90px; resize:vertical; }
+    .appt-form button { grid-column:span 2; background:rgba(0,0,0,.3); color:#fff; border:2px solid rgba(255,255,255,.5); border-radius:8px; padding:.875rem; cursor:pointer; font-family:inherit; font-weight:700; font-size:1rem; }
+
+    /* Stats */
+    .stats-row { display:grid; grid-template-columns:repeat(auto-fit, minmax(180px,1fr)); gap:1.5rem; background:#fff; border-radius:20px; padding:2.5rem; border:1px solid var(--border); }
+    .stat-item { text-align:center; }
+    .stat-num { font-size:2.25rem; font-weight:700; color:var(--p); }
+    .stat-label { font-size:.875rem; color:var(--muted); margin-top:.25rem; }
+
+    footer { background:#0c1a2e; color:#64748b; padding:2.5rem 2rem; }
+    .foot-inner { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fit, minmax(180px,1fr)); gap:2rem; margin-bottom:2rem; }
+    .foot-logo { font-size:1.3rem; font-weight:700; color:#fff; margin-bottom:.75rem; }
+    .foot-col h4 { color:#cbd5e1; font-weight:600; margin-bottom:.875rem; }
+    .foot-col ul { list-style:none; }
+    .foot-col li { margin-bottom:.45rem; font-size:.875rem; }
+    .foot-col a { color:#64748b; text-decoration:none; }
+    .foot-col a:hover { color:#fff; }
+    .foot-bottom { max-width:1100px; margin:0 auto; border-top:1px solid #1e293b; padding-top:1.25rem; text-align:center; font-size:.82rem; }
+
+    @media(max-width:900px) { .hero-inner { grid-template-columns:1fr; } }
+    @media(max-width:600px) { .nav-links { display:none; } .topbar { font-size:.75rem; } .appt-form { grid-template-columns:1fr; } .appt-form textarea, .appt-form button { grid-column:span 1; } }
+    /* Builder product grid */
+    .products { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px,1fr)); gap:1.5rem; }
+    .p-card { background:var(--card,#fff); border-radius:var(--r,12px); overflow:hidden; box-shadow:0 2px 16px rgba(0,0,0,.07); transition:transform .2s; border:1px solid var(--border,#e2e8f0); }
+    .p-card:hover { transform:translateY(-4px); }
+    .p-img { height:200px; background:linear-gradient(135deg,#f1f5f9,#e2e8f0); display:flex; align-items:center; justify-content:center; font-size:4rem; }
+    .p-body { padding:1.25rem; }
+    .p-name { font-size:1.05rem; font-weight:600; margin-bottom:.4rem; }
+    .p-desc { color:var(--muted,#64748b); font-size:.88rem; margin-bottom:1rem; opacity:.8; }
+    .p-foot { display:flex; align-items:center; justify-content:space-between; }
+    .p-price { font-size:1.15rem; font-weight:700; color:var(--p); }
+    .add-btn { background:var(--p); color:#fff; border:none; border-radius:8px; padding:.45rem 1rem; cursor:pointer; font-family:inherit; font-weight:600; font-size:.88rem; text-decoration:none; display:inline-block; }
+  </style>
+</head>
+<body>
+
+<div id="wb-loader"><span class="spin"></span><span data-i18n>در حال ترجمه...</span></div>
+
+<div class="topbar">
+  <span>📞 {{PHONE}}</span>
+  <span>📧 {{EMAIL}}</span>
+  <span>📍 {{CITY}}</span>
+</div>
+
+<nav>
+  <div class="logo">🏥 {{LOGO}}</div>
+  <ul class="nav-links">
+    <li><a href="#" data-i18n>خانه</a></li>
+    <li><a href="#services" data-i18n>خدمات</a></li>
+    <li><a href="#doctors" data-i18n>پزشکان</a></li>
+    <li><a href="#appointment" data-i18n>رزرو نوبت</a></li>
+  </ul>
+  <button class="appt-btn" data-i18n>رزرو نوبت آنلاین</button>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge" data-i18n>🩺 مراقبت‌های بهداشتی نوین</div>
+      <h1>{{BRAND_NAME}}</h1>
+      <p data-i18n>{{TAGLINE}}<br>سلامتی شما، اولویت ماست. با تیم متخصص ما همراه باشید.</p>
+      <div class="hero-btns">
+        <a href="#appointment" class="btn-p" data-i18n>رزرو نوبت</a>
+        <a href="{{PAYMENT_LINK}}" class="add-btn" style="padding:.75rem 2rem;font-size:.95rem;font-weight:700;border-radius:999px" target="_blank" rel="noopener" data-i18n>💳 پرداخت آنلاین</a>
+        <a href="#services" class="btn-o" data-i18n>خدمات ما</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <h3 data-i18n>ساعات کاری</h3>
+      <div class="info-row">📅 <span data-i18n>شنبه تا چهارشنبه:</span> <span data-i18n>۸:۰۰ — ۲۰:۰۰</span></div>
+      <div class="info-row">📅 <span data-i18n>پنج‌شنبه:</span> <span data-i18n>۸:۰۰ — ۱۴:۰۰</span></div>
+      <div class="info-row">🚨 <span data-i18n>اورژانس:</span> <span data-i18n>۲۴ ساعته</span></div>
+      <div class="info-row">📞 {{PHONE}}</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="stats-row">
+      <div class="stat-item"><div class="stat-num">+۲۰</div><div class="stat-label" data-i18n>سال تجربه</div></div>
+      <div class="stat-item"><div class="stat-num">+۵۰k</div><div class="stat-label" data-i18n>بیمار موفق</div></div>
+      <div class="stat-item"><div class="stat-num">+۳۰</div><div class="stat-label" data-i18n>متخصص</div></div>
+      <div class="stat-item"><div class="stat-num">۹۸٪</div><div class="stat-label" data-i18n>رضایت بیماران</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="container">
+    <div class="sec-center">
+      <h2 data-i18n>خدمات تخصصی ما</h2>
+      <p data-i18n>طیف کاملی از خدمات درمانی و تشخیصی</p>
+    </div>
+    <div class="products">
+      {{PRODUCTS_GRID}}
+      <div class="srv-card"><div class="srv-icon">🩻</div><div class="srv-title" data-i18n>تصویربرداری پزشکی</div><p class="srv-desc" data-i18n>MRI، سونوگرافی و رادیولوژی دیجیتال با آخرین دستگاه‌ها</p><div class="srv-price" data-i18n>مشاوره رایگان</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="doctors">
+  <div class="container">
+    <div class="sec-center">
+      <h2 data-i18n>تیم پزشکی متخصص</h2>
+      <p data-i18n>پزشکان مجرب و متخصص در خدمت سلامت شما</p>
+    </div>
+    <div class="doc-grid">
+      <div class="doc-card"><div class="doc-img">👨‍⚕️</div><div class="doc-body"><span class="doc-spec" data-i18n>قلب و عروق</span><div class="doc-name" data-i18n>دکتر احمدی</div><p class="doc-bio" data-i18n>فوق تخصص قلب، بیش از ۱۵ سال تجربه</p><button class="doc-btn" data-i18n>رزرو نوبت</button></div></div>
+      <div class="doc-card"><div class="doc-img">👩‍⚕️</div><div class="doc-body"><span class="doc-spec" data-i18n>اطفال</span><div class="doc-name" data-i18n>دکتر رضایی</div><p class="doc-bio" data-i18n>متخصص کودکان، عضو هیئت علمی دانشگاه</p><button class="doc-btn" data-i18n>رزرو نوبت</button></div></div>
+      <div class="doc-card"><div class="doc-img">👨‍⚕️</div><div class="doc-body"><span class="doc-spec" data-i18n>مغز و اعصاب</span><div class="doc-name" data-i18n>دکتر موسوی</div><p class="doc-bio" data-i18n>نورولوژیست، فلوشیپ از دانشگاه آلمان</p><button class="doc-btn" data-i18n>رزرو نوبت</button></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="appt-section" id="appointment">
+  <div class="container">
+    <div class="appt-inner">
+      <h2 data-i18n>رزرو نوبت آنلاین</h2>
+      <p data-i18n>نوبت خود را آنلاین رزرو کنید — تأییدیه پیامکی ارسال می‌شود</p>
+      <div class="appt-form">
+        <input type="text" data-i18n-placeholder placeholder="نام و نام خانوادگی">
+        <input type="tel" data-i18n-placeholder placeholder="شماره تماس">
+        <input type="date">
+        <select><option data-i18n>انتخاب تخصص</option><option>{{ITEM1}}</option><option>{{ITEM2}}</option><option>{{ITEM3}}</option></select>
+        <textarea data-i18n-placeholder placeholder="توضیح علائم یا درخواست شما..."></textarea>
+        <button data-i18n>ثبت درخواست نوبت</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-inner">
+    <div><div class="foot-logo">🏥 {{BRAND_NAME}}</div><p style="font-size:.875rem" data-i18n>سلامتی شما، اولویت ماست. کلینیک تخصصی با بالاترین استانداردهای بهداشتی.</p></div>
+    <div class="foot-col"><h4 data-i18n>خدمات</h4><ul><li><a href="#" data-i18n>مشاوره عمومی</a></li><li><a href="#" data-i18n>تصویربرداری</a></li><li><a href="#" data-i18n>آزمایشگاه</a></li></ul></div>
+    <div class="foot-col"><h4 data-i18n>تماس</h4><ul><li>📞 {{PHONE}}</li><li>📧 {{EMAIL}}</li><li>📍 {{CITY}} — {{ADDRESS}}</li><li style="margin-top:.5rem;display:flex;gap:.75rem">{{SOCIAL_LINKS}}</li></ul></div>
+  </div>
+  <div class="foot-bottom"><span data-i18n>تمامی حقوق محفوظ است</span> &copy; 2024 {{BRAND_NAME}}</div>
+</footer>
+
+<script src="/translator.js"></script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+.root {
+  position: fixed; inset: 0;
+  background: var(--accent-gradient, linear-gradient(135deg,#2952CC,#5B8DEF));
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 1.5rem;
+  z-index: 9997;
+  will-change: opacity;
+}
+.name {
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  font-weight: 800;
+  letter-spacing: -.03em;
+  color: #ffffff;
+  will-change: opacity, transform;
+}
+.line {
+  width: 120px; height: 3px;
+  background: rgba(255,255,255,0.4);
+  transform-origin: left center;
+  border-radius: 2px;
+  will-change: transform;
+}

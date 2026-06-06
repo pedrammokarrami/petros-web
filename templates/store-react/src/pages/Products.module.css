@@ -1,0 +1,56 @@
+.page { padding: 56px 1.25rem 6rem; max-width: 1400px; margin: 0 auto; min-height: 100vh; }
+
+.header { display: flex; align-items: baseline; gap: .75rem; margin-bottom: 1.25rem; padding-top: 1.25rem; }
+.title  { font-size: 1.5rem; font-weight: 800; }
+.count  { font-size: .82rem; color: var(--text-secondary); }
+
+/* سرچ */
+.searchWrap {
+  display: flex; align-items: center; gap: .75rem;
+  background: var(--bg-card); border-radius: var(--radius-btn);
+  padding: .75rem 1.25rem; margin-bottom: 1rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+}
+.searchIcon { color: var(--text-secondary); flex-shrink: 0; }
+.searchInput {
+  flex: 1; background: none; border: none; outline: none;
+  font-family: var(--font-body); font-size: .9rem; color: var(--text-primary);
+}
+.searchInput::placeholder { color: var(--text-secondary); }
+.clearBtn { background: none; border: none; color: var(--text-secondary); font-size: .85rem; }
+
+/* دسته‌بندی */
+.cats {
+  display: flex; gap: .5rem; overflow-x: auto;
+  padding-bottom: .5rem; margin-bottom: 1rem; scrollbar-width: none;
+}
+.cats::-webkit-scrollbar { display: none; }
+.catPill {
+  flex-shrink: 0; padding: .45rem 1.1rem; border-radius: var(--radius-btn);
+  background: var(--bg-card); color: var(--text-secondary);
+  border: 1.5px solid var(--border); font-size: .8rem; font-weight: 600;
+  white-space: nowrap; transition: all var(--dur) var(--ease); will-change: transform;
+}
+.catActive {
+  background: var(--accent-gradient); color: #fff; border-color: transparent;
+  box-shadow: 0 4px 14px var(--accent-glow);
+}
+
+/* مرتب‌سازی */
+.sortRow {
+  display: flex; align-items: center; gap: .75rem;
+  margin-bottom: 1.25rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border);
+}
+.sortLabel  { font-size: .78rem; color: var(--text-secondary); }
+.sortSelect {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: .4rem .875rem;
+  color: var(--text-primary); font-family: var(--font-body); font-size: .82rem; outline: none;
+}
+
+/* گرید */
+.grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+@media (min-width: 600px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 960px) { .grid { grid-template-columns: repeat(4, 1fr); } }
+
+.empty { text-align: center; padding: 5rem 1rem; color: var(--text-secondary); font-size: .95rem; }

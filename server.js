@@ -4,8 +4,10 @@ const path    = require('path');
 const fs      = require('fs');
 
 const app = express();
-app.use(express.json({ limit: '1mb' }));
+app.use(express.json({ limit: '2mb' }));
 app.use(express.static(path.join(__dirname)));
+// پنل ادمین از پوشه public سرویس می‌شود (مثلاً /panel.html)
+app.use(express.static(path.join(__dirname, 'public')));
 
 const DB_PATH  = path.join(__dirname, 'db.json');
 const TPL_DIR  = path.join(__dirname, 'templates');
@@ -226,6 +228,61 @@ app.post('/api/inventory', (req, res) => {
   }
 });
 
+// ── سیستم نظرات ──────────────────────────────────────────────────────────────
+
+app.get('/api/reviews/:productId', (req, res) => {
+  const db = readDB();
+  const reviews = (db.reviews || [])
+    .filter(r => r.productId === req.params.productId && r.approved !== false)
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  res.json(reviews);
+});
+
+app.post('/api/reviews', (req, res) => {
+  const { productId, rating, text } = req.body;
+  if (!productId) return res.status(400).json({ error: 'productId الزامی است' });
+  const r = parseInt(rating);
+  if (!r || r < 1 || r > 5) return res.status(400).json({ error: 'امتیاز باید بین ۱ تا ۵ باشد' });
+  if (!text?.trim())         return res.status(400).json({ error: 'متن نظر الزامی است' });
+
+  try {
+    const db = readDB();
+    if (!db.reviews) db.reviews = [];
+    const review = {
+      id:        uid(),
+      productId,
+      rating:    r,
+      text:      text.trim(),
+      approved:  true,
+      likes:     0,
+      dislikes:  0,
+      date:      new Date().toISOString().split('T')[0],
+      createdAt: new Date().toISOString()
+    };
+    db.reviews.push(review);
+    writeDB(db);
+    res.json({ success: true, review });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+app.post('/api/reviews/:id/vote', (req, res) => {
+  const { type } = req.body;
+  if (!['like','dislike'].includes(type)) return res.status(400).json({ error: 'type باید like یا dislike باشد' });
+  try {
+    const db = readDB();
+    const review = (db.reviews || []).find(r => r.id === req.params.id);
+    if (!review) return res.status(404).json({ error: 'نظر یافت نشد' });
+    if (type === 'like') review.likes++;
+    else review.dislikes++;
+    writeDB(db);
+    res.json({ success: true, likes: review.likes, dislikes: review.dislikes });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
 // ── مدیریت حسابداری ───────────────────────────────────────────────────────────
 
 app.get('/api/accounting', (_req, res) => {
@@ -275,6 +332,112 @@ app.post('/api/accounting', (req, res) => {
   }
 });
 
+// ── ساخت فروشگاه React (Liquid Glass Store) ──────────────────────────────────
+// اگر build وجود داشته باشد از آن استفاده می‌کند، وگرنه خطا
+
+const REACT_DIST = path.join(TPL_DIR, 'store-react', 'dist', 'index.html');
+
+app.post('/api/build/store', (req, res) => {
+  const {
+    storeName    = 'فروشگاه من',
+    logoUrl      = '',
+    primaryColor = '#6366f1',
+    heroImage    = '',
+    paymentLink  = '#',
+    products     = [],
+    categories   = [],
+    contact      = {},
+    social       = {}
+  } = req.body;
+
+  // اعتبارسنجی
+  if (!Array.isArray(products))   return res.status(400).json({ error: 'products باید آرایه باشد' });
+  if (!Array.isArray(categories)) return res.status(400).json({ error: 'categories باید آرایه باشد' });
+
+  // بررسی وجود build React
+  if (!fs.existsSync(REACT_DIST)) {
+    return res.status(503).json({
+      error: 'فایل build یافت نشد. لطفاً ابتدا در templates/store-react دستور npm run build را اجرا کنید.'
+    });
+  }
+
+  try {
+    let html = fs.readFileSync(REACT_DIST, 'utf8');
+
+    // ساخت شیء داده کامل فروشگاه
+    const storeDataJson = JSON.stringify({
+      meta: {
+        name:         storeName,
+        tagline:      req.body.tagline || '',
+        logoUrl,
+        primaryColor,
+        heroImage,
+        paymentLink:  paymentLink || '#',
+        heroDiscount: req.body.heroDiscount || 'تخفیف ویژه'
+      },
+      contact,
+      social,
+      categories,
+      products: products.map((p, i) => ({
+        id:            p.id || String(i + 1),
+        name:          p.name,
+        price:         Number(p.price) || 0,
+        originalPrice: Number(p.originalPrice) || 0,
+        stock:         parseInt(p.stock) || 0,
+        category:      p.category || '',
+        images:        p.images || (p.image ? [p.image] : []),
+        description:   p.description || '',
+        features:      p.features || [],
+        rating:        Number(p.rating) || 4.5,
+        reviewCount:   parseInt(p.reviewCount) || 0
+      })),
+      about: req.body.about || { story:'', stats:[], team:[] }
+    });
+
+    // تزریق داده‌ها در جایگاه placeholder
+    html = html.replace(
+      '<!--STORE_DATA_PLACEHOLDER-->',
+      `<script>window.STORE_DATA = ${storeDataJson};</script>`
+    );
+
+    // ذخیره در دیتابیس
+    const db   = readDB();
+    const site = {
+      id:        uid(),
+      template:  'store',
+      brandName: storeName,
+      createdAt: new Date().toISOString(),
+      config:    { storeName, logoUrl, primaryColor, heroImage, paymentLink }
+    };
+    db.sites.push(site);
+
+    // همگام‌سازی محصولات با انبار
+    products.forEach(p => {
+      if (!p.name?.trim()) return;
+      const existing = db.inventory.find(i => i.name === p.name.trim());
+      if (existing) {
+        existing.price     = String(p.price);
+        existing.stock     = parseInt(p.stock) || 0;
+        existing.updatedAt = new Date().toISOString();
+      } else {
+        db.inventory.push({
+          id:                uid(),
+          name:              p.name.trim(),
+          price:             String(p.price || 0),
+          stock:             parseInt(p.stock) || 0,
+          lowStockThreshold: 5,
+          updatedAt:         new Date().toISOString()
+        });
+      }
+    });
+
+    writeDB(db);
+    res.json({ siteId: site.id, html });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
 // ── سلامت سرور ───────────────────────────────────────────────────────────────
 
 app.get('/api/health', (_req, res) => {
@@ -289,6 +452,7 @@ app.get('*', (_req, res) => {
 
 app.listen(PORT, () => {
   console.log(`\n✅ Petros Web Builder — http://localhost:${PORT}`);
-  console.log(`📦 انبار:      http://localhost:${PORT}/inventory.html`);
-  console.log(`💰 حسابداری:   http://localhost:${PORT}/accounting.html\n`);
+  console.log(`🏪 پنل فروشگاه: http://localhost:${PORT}/panel.html`);
+  console.log(`📦 انبار:       http://localhost:${PORT}/inventory.html`);
+  console.log(`💰 حسابداری:    http://localhost:${PORT}/accounting.html\n`);
 });

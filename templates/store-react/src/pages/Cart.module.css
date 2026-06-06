@@ -1,0 +1,100 @@
+.page { padding: 56px 1.25rem 6rem; max-width: 800px; margin: 0 auto; min-height: 100vh; }
+.title {
+  font-size: 1.5rem; font-weight: 800;
+  margin-bottom: 1.5rem; padding-top: 1.25rem;
+}
+
+/* خالی */
+.empty { text-align: center; padding: 5rem 2rem; }
+.emptyIcon { font-size: 3.5rem; margin-bottom: 1rem; }
+.emptyText { font-size: 1rem; color: var(--text-secondary); margin-bottom: 1.5rem; }
+.emptyBtn {
+  background: var(--accent-gradient); color: #fff;
+  border: none; border-radius: var(--radius-btn);
+  padding: .875rem 2rem; font-size: .9rem; font-weight: 700;
+  box-shadow: 0 6px 20px var(--accent-glow);
+  will-change: transform;
+}
+
+/* لیست */
+.list { display: flex; flex-direction: column; gap: .75rem; margin-bottom: 1.5rem; }
+.item {
+  display: flex; align-items: center; gap: .875rem;
+  background: var(--bg-card); border-radius: var(--radius-card);
+  padding: .875rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  will-change: opacity, transform;
+}
+
+/* عکس float */
+.itemImgWrap {
+  width: 72px; height: 72px; flex-shrink: 0;
+  border-radius: var(--radius-sm); overflow: hidden;
+  background: linear-gradient(145deg, #dce7ff, #eef3ff);
+  display: flex; align-items: center; justify-content: center;
+  padding: .25rem;
+}
+.itemImg {
+  width: 90%; height: 90%; object-fit: contain;
+  mix-blend-mode: multiply;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+}
+
+.itemInfo { flex: 1; overflow: hidden; }
+.itemName  { font-size: .85rem; font-weight: 700; margin-bottom: .15rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.itemCat   { font-size: .68rem; color: var(--text-secondary); text-transform: uppercase; margin-bottom: .25rem; }
+.itemPrice { font-size: .8rem; color: var(--accent); font-weight: 600; }
+
+.itemActions { display: flex; flex-direction: column; align-items: flex-end; gap: .5rem; }
+.qty { display: flex; align-items: center; gap: .35rem; }
+.qBtn {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--bg-secondary); border: none;
+  color: var(--text-primary); font-size: 1rem; font-weight: 600;
+  display: flex; align-items: center; justify-content: center;
+  will-change: transform;
+}
+.qNum { font-size: .88rem; font-weight: 700; min-width: 18px; text-align: center; }
+.itemTotal { font-size: .82rem; font-weight: 700; color: var(--text-primary); }
+.removeBtn { background: none; border: none; color: var(--text-secondary); padding: .2rem; transition: color var(--dur) var(--ease); }
+.removeBtn:hover { color: #e53e3e; }
+
+/* خلاصه */
+.summary {
+  background: var(--bg-card); border-radius: var(--radius-card);
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  display: flex; flex-direction: column; gap: .875rem;
+}
+.summaryTitle { font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--text-secondary); }
+.summaryRow   { display: flex; justify-content: space-between; font-size: .88rem; color: var(--text-secondary); }
+.discountRow  { color: #22c55e; font-weight: 600; }
+.free         { color: #22c55e; font-weight: 600; }
+.summaryDivider { height: 1px; background: var(--border); }
+.totalRow     { color: var(--text-primary); font-weight: 800; font-size: .95rem; }
+
+.btnCheckout {
+  width: 100%; background: var(--accent-gradient); color: #fff;
+  border: none; border-radius: var(--radius-btn);
+  padding: .975rem 1.5rem; font-size: .92rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; gap: .75rem;
+  box-shadow: 0 6px 20px var(--accent-glow);
+  will-change: transform;
+}
+.btnArrow {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.btnContinue {
+  width: 100%; background: var(--bg-secondary); border: none;
+  border-radius: var(--radius-btn); padding: .875rem;
+  font-size: .88rem; font-weight: 600; color: var(--text-primary);
+  transition: background var(--dur) var(--ease);
+}
+.btnContinue:hover { background: var(--border); }
+.clearBtn {
+  background: none; border: none; font-size: .75rem;
+  color: var(--text-secondary); text-decoration: underline;
+  text-underline-offset: 3px; align-self: center;
+}

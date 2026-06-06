@@ -1,0 +1,61 @@
+.page { padding: 56px 1.25rem 7rem; min-height: 100vh; }
+
+/* سرچ */
+.searchSection { margin-bottom: 1.25rem; padding-top: 1.25rem; }
+.title { font-size: 1.5rem; font-weight: 800; margin-bottom: 1rem; }
+.searchWrap {
+  display: flex; align-items: center; gap: .75rem;
+  background: var(--bg-card); border-radius: var(--radius-btn);
+  padding: .875rem 1.25rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+}
+.searchIcon  { color: var(--text-secondary); flex-shrink: 0; }
+.searchInput {
+  flex: 1; background: none; border: none; outline: none;
+  font-family: var(--font-body); font-size: 1rem; font-weight: 500;
+  color: var(--text-primary);
+}
+.searchInput::placeholder { color: var(--text-secondary); font-weight: 400; }
+.clearBtn { background: none; border: none; color: var(--text-secondary); font-size: .9rem; }
+
+/* دسته‌بندی */
+.cats {
+  display: flex; gap: .5rem; overflow-x: auto;
+  padding-bottom: .5rem; margin-bottom: 1.25rem; scrollbar-width: none;
+}
+.cats::-webkit-scrollbar { display: none; }
+.catPill {
+  flex-shrink: 0; padding: .45rem 1.1rem; border-radius: var(--radius-btn);
+  background: var(--bg-card); color: var(--text-secondary);
+  border: 1.5px solid var(--border); font-size: .8rem; font-weight: 600;
+  white-space: nowrap; transition: all var(--dur) var(--ease); will-change: transform;
+}
+.catActive {
+  background: var(--accent-gradient); color: #fff; border-color: transparent;
+  box-shadow: 0 4px 14px var(--accent-glow);
+}
+
+/* ترندها */
+.trends { margin-bottom: 1.5rem; }
+.trendsTitle { font-size: .95rem; font-weight: 700; margin-bottom: .875rem; }
+.trendsList  { display: flex; flex-wrap: wrap; gap: .5rem; }
+.trendPill {
+  padding: .5rem 1.1rem;
+  background: var(--bg-card); border: 1.5px solid var(--border);
+  border-radius: var(--radius-btn); font-size: .82rem; font-weight: 500;
+  color: var(--text-primary);
+  transition: all var(--dur) var(--ease); will-change: transform;
+}
+.trendPill:hover { border-color: var(--accent); color: var(--accent); }
+
+/* نتایج */
+.grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;
+}
+@media (min-width: 600px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 960px) { .grid { grid-template-columns: repeat(4, 1fr); } }
+
+/* empty */
+.noResults { text-align: center; padding: 4rem 1rem; }
+.noResultsText { font-size: 1rem; font-weight: 600; margin-bottom: .4rem; }
+.noResultsHint { font-size: .85rem; color: var(--text-secondary); }

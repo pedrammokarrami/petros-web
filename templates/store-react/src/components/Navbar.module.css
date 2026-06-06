@@ -1,0 +1,48 @@
+.nav {
+  position: fixed; top: 0; inset-inline: 0; z-index: 200;
+  height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 1.25rem;
+  transition: background var(--dur) var(--ease), box-shadow var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+
+.transparent {
+  background: transparent;
+  color: #ffffff;
+}
+.solid {
+  background: rgba(248,248,248,0.96);
+  color: var(--text-primary);
+  box-shadow: 0 1px 0 var(--border);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* لوگو */
+.brand {
+  font-size: 1.05rem; font-weight: 800;
+  letter-spacing: -.02em; color: inherit;
+}
+
+/* گروه چپ (صفحات غیر خانه) */
+.leftGroup {
+  display: flex; align-items: center; gap: .625rem;
+}
+.backBtn {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(0,0,0,0.05); border: none;
+  display: flex; align-items: center; justify-content: center;
+  color: inherit; will-change: transform;
+}
+.pageTitle {
+  font-size: .9rem; font-weight: 600; color: inherit;
+}
+
+/* اعلان */
+.notifBtn {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(0,0,0,0.05); border: none;
+  display: flex; align-items: center; justify-content: center;
+  color: inherit;
+}
+.transparent .notifBtn { background: rgba(255,255,255,0.15); }

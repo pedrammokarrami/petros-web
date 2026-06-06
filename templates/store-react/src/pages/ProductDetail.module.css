@@ -1,0 +1,208 @@
+.page { height: 100dvh; overflow-y: auto; background: var(--bg); padding-bottom: 90px; box-sizing: border-box; }
+.notFound { text-align: center; padding: 8rem 2rem; color: var(--text-secondary); }
+.notFound button { margin-top: 1rem; background: none; border: 1px solid var(--border); border-radius: 8px; padding: .5rem 1.2rem; font-size: .9rem; color: var(--text-primary); }
+
+/* ── بخش عکس با gradient آبی ── */
+.imageSection {
+  position: relative;
+  height: 55vw; min-height: 260px; max-height: 480px;
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.imageBg {
+  position: absolute; inset: 0;
+  background: var(--accent-gradient);
+}
+.imageBg::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 20%, rgba(255,255,255,0.15) 0%, transparent 60%);
+}
+
+/* هدر روی عکس */
+.imgHeader {
+  position: absolute; top: 0; left: 0; right: 0; z-index: 5;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: calc(env(safe-area-inset-top, 0px) + .875rem) 1rem .875rem;
+  direction: ltr;
+}
+.imgHeaderBtn {
+  width: 38px; height: 38px;
+  background: rgba(255,255,255,0.18); border: none; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: .95rem;
+  will-change: transform; flex-shrink: 0;
+}
+.imgHeaderBtnWished { color: #fca5a5 !important; }
+.imgHeaderTitle {
+  font-size: .88rem; font-weight: 700; color: rgba(255,255,255,0.9);
+}
+
+/* عکس محصول float */
+.productImgWrap {
+  position: relative; z-index: 2;
+  width: 55%; max-width: 260px;
+  will-change: transform;
+}
+.productImg {
+  width: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 40px rgba(0,0,0,0.4));
+  will-change: opacity;
+}
+.discountBadge {
+  position: absolute; top: .875rem; left: 50%; transform: translateX(-50%);
+  background: rgba(255,255,255,0.2); backdrop-filter: blur(4px);
+  color: #fff; border: 1px solid rgba(255,255,255,0.35);
+  border-radius: 20px; font-size: .72rem; font-weight: 700;
+  padding: .2rem .7rem; z-index: 4;
+}
+
+/* dots */
+.dots {
+  display: flex; justify-content: center; align-items: center; gap: .5rem;
+  padding: .75rem 0; background: var(--bg);
+}
+.dot {
+  height: 8px; width: 8px; border-radius: 4px;
+  background: rgba(255,255,255,0.2); border: none; padding: 0; cursor: pointer;
+  transition: background var(--dur) var(--ease), width var(--dur) var(--ease);
+}
+.dotActive { background: var(--accent); width: 22px; }
+
+/* ── اطلاعات ── */
+.infoPanel {
+  background: var(--bg); padding: 1.25rem 1.25rem 1.5rem;
+}
+.infoCat {
+  font-size: .68rem; color: var(--accent); text-transform: uppercase;
+  letter-spacing: .1em; font-weight: 700; margin-bottom: .4rem;
+}
+.infoName {
+  font-size: 1.5rem; font-weight: 800; line-height: 1.2;
+  margin-bottom: .875rem; color: var(--text-primary);
+}
+
+/* قیمت */
+.priceRow { display: flex; align-items: center; gap: .75rem; margin-bottom: .875rem; flex-wrap: wrap; }
+.price    { font-size: 1.2rem; font-weight: 800; color: var(--accent); }
+.orig     { text-decoration: line-through; color: var(--text-secondary); font-size: .9rem; }
+.discountPill {
+  background: var(--accent-gradient); color: #fff;
+  border-radius: 20px; font-size: .68rem; font-weight: 700;
+  padding: .18rem .625rem;
+  box-shadow: 0 2px 8px var(--accent-glow);
+}
+
+/* ستاره‌ها */
+.ratingRow { display: flex; align-items: center; gap: .35rem; margin-bottom: 1rem; }
+.stars     { display: flex; gap: .05rem; }
+.starOn    { color: #f59e0b; font-size: .88rem; }
+.starOff   { color: rgba(255,255,255,0.2); font-size: .88rem; }
+.ratingNum  { font-size: .88rem; font-weight: 700; color: var(--text-primary); }
+.reviewCount { font-size: .82rem; color: var(--text-secondary); }
+
+.desc { color: var(--text-secondary); line-height: 1.75; font-size: .88rem; margin-bottom: 1.25rem; }
+
+/* انتخابگرها */
+.selector      { margin-bottom: 1.25rem; }
+.selectorLabel {
+  font-size: .7rem; font-weight: 700; color: var(--text-secondary);
+  text-transform: uppercase; letter-spacing: .08em; margin-bottom: .625rem;
+}
+.sizeRow { display: flex; gap: .5rem; flex-wrap: wrap; }
+.sizeBtn {
+  min-width: 44px; height: 44px; padding: 0 .75rem;
+  border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--bg-card); color: var(--text-secondary);
+  font-size: .85rem; font-weight: 600;
+  transition: all var(--dur) var(--ease); will-change: transform;
+}
+.sizeBtn:hover { border-color: var(--accent); color: var(--accent); }
+.sizeActive { background: var(--accent-gradient); color: #fff; border-color: transparent; box-shadow: 0 4px 12px var(--accent-glow); }
+
+.colorRow { display: flex; gap: .625rem; }
+.colorDot {
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 2.5px solid transparent; cursor: pointer;
+  transition: transform var(--dur) var(--ease), border-color var(--dur) var(--ease);
+  will-change: transform;
+}
+.colorActive { border-color: var(--accent) !important; transform: scale(1.15); }
+
+/* موجودی */
+.stockInfo { margin-bottom: 1.25rem; }
+.stockOk  { font-size: .8rem; color: #22c55e; font-weight: 600; }
+.stockLow { font-size: .8rem; color: #f59e0b; font-weight: 600; }
+.stockOut { font-size: .8rem; color: #888; }
+
+/* دکمه‌ها */
+.btnAdd {
+  width: 100%; padding: 1rem 1.5rem;
+  background: var(--accent-gradient); color: #fff;
+  border: none; border-radius: var(--radius-btn);
+  font-size: .92rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; gap: .75rem;
+  margin-bottom: .75rem;
+  box-shadow: 0 6px 20px var(--accent-glow);
+  will-change: transform;
+}
+.btnAdded   { background: linear-gradient(135deg, #22c55e, #4ade80) !important; box-shadow: 0 6px 20px rgba(34,197,94,0.35) !important; }
+.btnDisabled { background: rgba(255,255,255,0.12) !important; color: rgba(255,255,255,0.4) !important; box-shadow: none !important; }
+.btnArrow {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.btnBuy {
+  width: 100%; padding: .875rem;
+  background: var(--bg-card); color: var(--accent);
+  border: 1.5px solid var(--accent); border-radius: var(--radius-btn);
+  font-size: .88rem; font-weight: 700;
+  margin-bottom: 1.5rem;
+  transition: all var(--dur) var(--ease);
+  will-change: transform;
+}
+.btnBuy:hover { background: var(--accent-gradient); color: #fff; border-color: transparent; }
+
+/* ویژگی‌ها */
+.features { border-top: 1px solid var(--border); padding-top: 1.25rem; margin-top: .25rem; }
+.featRow  { display: flex; align-items: center; gap: .625rem; font-size: .85rem; color: var(--text-secondary); margin-bottom: .4rem; }
+.featDot  { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+
+/* نظرات */
+.reviewsSection { background: var(--bg-card); padding: 1.5rem 1.25rem; border-top: 8px solid var(--bg-secondary); }
+
+/* مشابه */
+.similarSection { background: var(--bg); padding: 1.5rem 1.25rem; border-top: 8px solid var(--bg-secondary); }
+.similarTitle   { font-size: 1rem; font-weight: 800; margin-bottom: 1rem; }
+.similarGrid    { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px,1fr)); gap: .75rem; }
+.similarCard    { cursor: pointer; will-change: transform; }
+.similarImgWrap {
+  aspect-ratio: 3/4; border-radius: 14px; overflow: hidden;
+  background: linear-gradient(145deg, #1a2d5a, #0e1e46);
+  border: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: .5rem;
+  display: flex; align-items: center; justify-content: center;
+  padding: .5rem;
+}
+.similarImg     { width: 80%; height: 80%; object-fit: contain; mix-blend-mode: multiply; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.12)); }
+.similarName    { font-size: .8rem; font-weight: 600; margin-bottom: .15rem; line-height: 1.3; }
+.similarPrice   { font-size: .75rem; color: var(--accent); font-weight: 600; }
+
+/* Modal */
+.overlay {
+  position: fixed; inset: 0; z-index: 600;
+  background: rgba(0,0,0,0.5);
+  display: flex; align-items: flex-end;
+  will-change: opacity;
+}
+.modal {
+  width: 100%; max-height: 95vh; overflow-y: auto;
+  background: var(--bg); border-radius: 24px 24px 0 0;
+  will-change: transform;
+}
+.dragHandle {
+  width: 36px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px;
+  margin: .75rem auto .25rem;
+}

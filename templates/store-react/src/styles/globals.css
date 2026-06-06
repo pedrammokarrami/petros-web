@@ -1,0 +1,80 @@
+/* ── Kloset Dark Navy — PETROS ── */
+:root {
+  --bg:              #0d1b3e;
+  --bg-card:         #1a2d5a;
+  --bg-secondary:    rgba(255,255,255,0.06);
+  --accent:          #2952CC;
+  --accent-light:    #5B8DEF;
+  --accent-gradient: linear-gradient(135deg, #2952CC 0%, #5B8DEF 100%);
+  --accent-glow:     rgba(41,82,204,0.35);
+  --text-primary:    #ffffff;
+  --text-secondary:  rgba(255,255,255,0.6);
+  --text-muted:      rgba(255,255,255,0.3);
+  --card-bg:         rgba(255,255,255,0.08);
+  --border:          rgba(255,255,255,0.12);
+  --border-hover:    rgba(255,255,255,0.2);
+  --dark-bg:         #0a1228;
+  --store-primary:   #5B8DEF;
+  --radius-card:     20px;
+  --radius-btn:      50px;
+  --radius-sm:       12px;
+  --font-body:       'Inter', -apple-system, sans-serif;
+  --ease:            cubic-bezier(0.25, 0.1, 0.25, 1);
+  --dur:             0.22s;
+  --bg-primary: var(--bg);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text-primary);
+  line-height: 1.6;
+  overflow: hidden;
+  height: 100dvh;
+  direction: rtl;
+  -webkit-font-smoothing: antialiased;
+}
+
+a   { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+button { font-family: var(--font-body); cursor: pointer; }
+input, select, textarea { font-family: var(--font-body); }
+
+/* scrollbar hidden */
+* { scrollbar-width: none; }
+*::-webkit-scrollbar { display: none; }
+
+/* scroll progress */
+#scroll-progress {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--accent-gradient);
+  transform-origin: left; z-index: 9999;
+  will-change: transform;
+}
+
+/* glass card */
+.glass-card {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 20px;
+}
+
+/* primary button */
+.btn-primary {
+  background: linear-gradient(135deg, #2952CC, #5B8DEF);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* helpers */
+.text-secondary { color: var(--text-secondary); }
+.text-accent    { color: var(--accent-light); }
+.divider { height: 1px; background: var(--border); margin: 1.5rem 0; }

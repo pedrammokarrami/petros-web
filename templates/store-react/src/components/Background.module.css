@@ -1,0 +1,58 @@
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 20% 80%, #050510 0%, #0a0a20 100%);
+}
+
+/* نقاط نوری blur شده متحرک */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.35;
+  animation: float 18s ease-in-out infinite alternate;
+}
+
+.orb1 {
+  width: 600px; height: 600px;
+  top: -15%; right: -10%;
+  background: var(--store-primary);
+  animation-duration: 20s;
+  opacity: 0.20;
+}
+.orb2 {
+  width: 400px; height: 400px;
+  bottom: 5%; left: 5%;
+  background: #0ea5e9;
+  animation-duration: 26s;
+  animation-delay: -8s;
+  opacity: 0.15;
+}
+.orb3 {
+  width: 320px; height: 320px;
+  top: 40%; left: 40%;
+  background: #f59e0b;
+  animation-duration: 22s;
+  animation-delay: -4s;
+  opacity: 0.10;
+}
+
+/* Mesh grid */
+.mesh {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+@keyframes float {
+  0%   { transform: translate(0, 0) scale(1); }
+  33%  { transform: translate(40px, -30px) scale(1.08); }
+  66%  { transform: translate(-25px, 20px) scale(0.94); }
+  100% { transform: translate(15px, -15px) scale(1.04); }
+}

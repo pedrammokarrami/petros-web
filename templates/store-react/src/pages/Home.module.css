@@ -1,0 +1,143 @@
+.page { min-height: 100vh; }
+
+/* ── Hero ── */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+}
+
+/* gradient آبی پس‌زمینه */
+.heroBg {
+  position: absolute; inset: 0;
+  background: var(--accent-gradient);
+  z-index: 0;
+}
+.heroBg::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 60% 30%, rgba(255,255,255,0.12) 0%, transparent 65%);
+}
+
+/* عکس محصول float */
+.heroProduct {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -55%);
+  width: min(70%, 320px);
+  z-index: 1;
+  will-change: transform;
+}
+.heroProductImg {
+  width: 100%;
+  mix-blend-mode: multiply;
+  filter: drop-shadow(0 24px 48px rgba(0,0,0,0.30));
+}
+
+/* متن hero */
+.heroContent {
+  position: relative; z-index: 2;
+  padding: 0 1.75rem 3.5rem;
+}
+.heroTag {
+  font-size: .68rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .15em;
+  color: rgba(255,255,255,0.65);
+  margin-bottom: .75rem;
+  will-change: opacity, transform;
+}
+.heroTitle {
+  font-size: clamp(2.5rem, 10vw, 4.5rem);
+  font-weight: 800; color: #fff;
+  line-height: .95; letter-spacing: -.03em;
+  margin-bottom: 2rem;
+  will-change: opacity, transform;
+}
+.heroBtn {
+  display: inline-flex; align-items: center; gap: .875rem;
+  background: rgba(255,255,255,0.95); color: var(--accent);
+  border: none; border-radius: var(--radius-btn);
+  padding: .875rem 1.625rem;
+  font-size: .88rem; font-weight: 700;
+  will-change: transform;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+}
+.heroBtnArrow {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--accent); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ── محتوای اصلی ── */
+.main {
+  background: var(--bg);
+  padding: 1.75rem 1.25rem 7rem;
+}
+
+/* Pill filter */
+.pills {
+  display: flex; gap: .5rem; overflow-x: auto;
+  padding-bottom: .5rem; margin-bottom: 1.5rem;
+  scrollbar-width: none;
+}
+.pills::-webkit-scrollbar { display: none; }
+.pill {
+  flex-shrink: 0;
+  padding: .45rem 1.1rem;
+  border-radius: var(--radius-btn);
+  background: var(--bg-card); color: var(--text-secondary);
+  border: 1.5px solid var(--border);
+  font-size: .8rem; font-weight: 600; white-space: nowrap;
+  transition: all var(--dur) var(--ease);
+  will-change: transform;
+}
+.pillActive {
+  background: var(--accent-gradient); color: #fff;
+  border-color: transparent;
+  box-shadow: 0 4px 14px var(--accent-glow);
+}
+
+/* section head */
+.sectionHead {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.sectionTitle { font-size: 1.1rem; font-weight: 800; }
+.seeAll {
+  font-size: .78rem; font-weight: 600; color: var(--accent);
+  background: none; border: none;
+}
+
+/* گرید */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+@media (min-width: 600px)  { .grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 960px)  { .grid { grid-template-columns: repeat(4, 1fr); } }
+
+/* فوتر */
+.footer {
+  padding: 2.5rem 1.5rem 6rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  background: var(--bg-card);
+}
+.footerBrand {
+  font-size: 1.25rem; font-weight: 800;
+  color: var(--accent); margin-bottom: .875rem;
+}
+.footerSocials {
+  display: flex; justify-content: center; gap: 1.5rem; margin-bottom: .75rem;
+}
+.footerLink {
+  font-size: .78rem; font-weight: 600; color: var(--text-secondary);
+  text-transform: uppercase; letter-spacing: .06em;
+  transition: color var(--dur) var(--ease);
+}
+.footerLink:hover { color: var(--accent); }
+.footerCopy { font-size: .72rem; color: var(--text-muted); }

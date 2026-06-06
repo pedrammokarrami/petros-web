@@ -1,0 +1,15 @@
+.btn {
+  position: fixed;
+  bottom: 5.5rem;
+  left: 1.25rem;
+  z-index: 500;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--accent-gradient);
+  border: none;
+  color: #fff;
+  font-size: 1rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 16px var(--accent-glow, rgba(41,82,204,0.35));
+  will-change: opacity, transform;
+}

@@ -1,4 +1,4 @@
-.page { padding: 56px 1.25rem 6rem; max-width: 1400px; margin: 0 auto; min-height: 100vh; }
+.page { padding: 72px clamp(1.25rem,3vw,3rem) 6rem; max-width: 1400px; margin: 0 auto; min-height: 100vh; }
 
 .header { display: flex; align-items: baseline; gap: .75rem; margin-bottom: 1.25rem; padding-top: 1.25rem; }
 .title  { font-size: 1.5rem; font-weight: 800; }
@@ -50,7 +50,8 @@
 
 /* گرید */
 .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
-@media (min-width: 600px) { .grid { grid-template-columns: repeat(3, 1fr); } }
-@media (min-width: 960px) { .grid { grid-template-columns: repeat(4, 1fr); } }
+@media (min-width: 540px)  { .grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 900px)  { .grid { grid-template-columns: repeat(4, 1fr); } }
+@media (min-width: 1280px) { .grid { grid-template-columns: repeat(5, 1fr); } }
 
 .empty { text-align: center; padding: 5rem 1rem; color: var(--text-secondary); font-size: .95rem; }

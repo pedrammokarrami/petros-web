@@ -21,7 +21,8 @@
   --font-body:       'Inter', -apple-system, sans-serif;
   --ease:            cubic-bezier(0.25, 0.1, 0.25, 1);
   --dur:             0.22s;
-  --bg-primary: var(--bg);
+  --bg-primary:      var(--bg);
+  --sidebar-w:       220px;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -32,8 +33,7 @@ body {
   background: var(--bg);
   color: var(--text-primary);
   line-height: 1.6;
-  overflow: hidden;
-  height: 100dvh;
+  min-height: 100vh;
   direction: rtl;
   -webkit-font-smoothing: antialiased;
 }
@@ -54,6 +54,19 @@ input, select, textarea { font-family: var(--font-body); }
   background: var(--accent-gradient);
   transform-origin: left; z-index: 9999;
   will-change: transform;
+}
+
+/* ── Layout: sidebar offset ── */
+.app-content {
+  min-height: 100vh;
+}
+@media (min-width: 768px) {
+  .app-content {
+    margin-left: var(--sidebar-w);
+  }
+  #scroll-progress {
+    left: var(--sidebar-w);
+  }
 }
 
 /* glass card */

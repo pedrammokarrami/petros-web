@@ -150,19 +150,14 @@ export default function Home() {
   const catLabel = cat?.id === 'all' ? 'All Products' : cat?.label || '';
 
   return (
+    <div style={{ background: '#0d1b3e', minHeight: '100vh' }}>
     <div style={{
-      background: '#0d1b3e',
-      height:     '100dvh',
-      overflowY:  'auto',
-    }}>
-    <div style={{
-      maxWidth:      430,
+      maxWidth:      1400,
       margin:        '0 auto',
-      minHeight:     '100dvh',
+      minHeight:     '100vh',
       background:    '#0d1b3e',
       position:      'relative',
-      overflow:      'hidden',
-      paddingBottom: 90,
+      paddingBottom: 100,
       fontFamily:    ff,
     }}>
 
@@ -172,7 +167,7 @@ export default function Home() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: .28, ease }}
         style={{
-          padding:    '52px 20px 20px',
+          padding:    'clamp(52px, 5vw, 72px) clamp(16px, 3vw, 40px) 20px',
           background: 'linear-gradient(180deg, rgba(41,82,204,0.22) 0%, transparent 100%)',
         }}
       >
@@ -243,7 +238,7 @@ export default function Home() {
         display:    'flex',
         gap:        16,
         overflowX:  'auto',
-        padding:    '0 16px 16px',
+        padding:    '0 clamp(16px,3vw,40px) 16px',
         direction:  'ltr',
       }}>
         {CATS.map((cat, i) => {
@@ -286,7 +281,7 @@ export default function Home() {
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -10 }}
           transition={{ duration: .2, ease }}
-          style={{ padding: '0 16px 12px' }}
+          style={{ padding: '0 clamp(16px,3vw,40px) 12px' }}
         >
           <div style={{
             display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4,
@@ -349,10 +344,10 @@ export default function Home() {
             transition={{ duration: .25, ease }}
             style={{
               display:             'grid',
-              gridTemplateColumns: '1fr 1fr',
-              gap:                 12,
-              padding:             '0 16px',
-              marginBottom:        12,
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              gap:                 16,
+              padding:             '0 clamp(16px,3vw,40px)',
+              marginBottom:        16,
               overflow:            'visible',
             }}
           >
@@ -390,9 +385,9 @@ export default function Home() {
         animate="visible"
         style={{
           display:             'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap:                 12,
-          padding:             '0 16px',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))',
+          gap:                 '1rem',
+          padding:             '0 clamp(16px,3vw,40px)',
         }}
       >
         {(gridProds.length > 0 ? gridProds : filtered).map(p => (
@@ -402,7 +397,7 @@ export default function Home() {
 
       {/* فوتر */}
       <div style={{
-        margin: '24px 16px 0',
+        margin: '24px clamp(16px,3vw,40px) 0',
         padding: '14px',
         background: 'rgba(255,255,255,0.04)',
         border: '1px solid rgba(255,255,255,0.07)',

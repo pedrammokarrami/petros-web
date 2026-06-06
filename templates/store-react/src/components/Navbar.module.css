@@ -1,9 +1,12 @@
 .nav {
-  position: fixed; top: 0; inset-inline: 0; z-index: 200;
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
   height: 56px;
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 1.25rem;
   transition: background var(--dur) var(--ease), box-shadow var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+@media (min-width: 768px) {
+  .nav { left: var(--sidebar-w, 220px); }
 }
 
 .transparent {

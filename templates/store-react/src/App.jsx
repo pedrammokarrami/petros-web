@@ -68,12 +68,15 @@ function AppRoutes() {
 function Inner() {
   return (
     <>
-      <div id="scroll-progress" />
-      <ScrollProgress />
-      <Navbar />
-      <AppRoutes />
       <BottomNav />
-      <BackToTop />
+      {/* محتوا: روی موبایل full-width، روی دسکتاپ کنار sidebar */}
+      <div className="app-content">
+        <div id="scroll-progress" />
+        <ScrollProgress />
+        <Navbar />
+        <AppRoutes />
+        <BackToTop />
+      </div>
     </>
   );
 }
